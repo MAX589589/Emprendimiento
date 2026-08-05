@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Atención y Orientación - Violencia de Género</title>
+  <style>
+    :root {
+      /* Paleta Principal: Enfoque Violeta / Rosado */
+      --primary: #831843;
+      --pink-main: #db2777;
+      --pink-hover: #be185d;
+      --pink-bg: #fdf2f8;
+      --pink-border: #fbcfe8;
+      --pink-text: #9d174d;
+
+      /* Paleta Sección Hombres: Azul */
+      --blue-main: #2563eb;
+      --blue-hover: #1d4ed8;
+      --blue-bg: #eff6ff;
+      --blue-border: #bfdbfe;
+      --blue-text: #1e40af;
+
+      /* Colores base y de alerta */
+      --bg-body: #faf5f8;
+      --bg-card: #ffffff;
+      --bg-subtle: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --danger-text: #991b1b;
+
+      --success: #16a34a;
+      --success-bg: #f0fdf4;
+      --success-border: #bbf7d0;
+      --success-text: #15803d;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+      --radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Barra superior de seguridad fija */
+    .sticky-safety-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      gap: 10px;
+    }
+
+    .safety-hint {
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .btn-quick-exit {
+      background-color: var(--danger);
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      min-height: 44px; /* Tamaño mínimo para táctil */
+    }
+
+    .btn-quick-exit:hover {
+      background-color: var(--danger-hover);
+    }
+
+    .main-wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px 16px 48px 16px;
+    }
+
+    /* Encabezado Principal */
+    header {
+      background: var(--bg-card);
+      border: 1px solid var(--pink-border);
+      border-top: 6px solid var(--pink-main);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    header h1 {
+      margin: 0 0 8px 0;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* Tarjeta de Emergencia */
+    .emergency-card {
+      background-color: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      border-left: 6px solid var(--danger);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .emergency-text h2 {
+      margin: 0 0 4px 0;
+      color: var(--danger-text);
+      font-size: 1.2rem;
+    }
+
+    .emergency-text p {
+      margin: 0;
+      color: #7f1d1d;
+      font-size: 0.95rem;
+    }
+
+    .btn-emergency {
+      background-color: var(--danger);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px; /* Tamaño mínimo para táctil */
+      justify-content: center;
+    }
+
+    .btn-emergency:hover {
+      background-color: var(--danger-hover);
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      margin-bottom: 16px;
+    }
+
+    .section-header h2 {
+      font-size: 1.3rem;
+      margin: 0 0 4px 0;
+      color: var(--primary);
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Grid de Directorio de Líneas (Rosado) */
+    .directory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .helpline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--pink-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      height: 100%;
+    }
+
+    .helpline-card:hover {
+      border-color: var(--pink-main);
+      box-shadow: var(--shadow-md);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      width: fit-content;
+      text-transform: uppercase;
+    }
+
+    .badge-pink { background-color: var(--pink-bg); color: var(--pink-text); }
+    .badge-blue { background-color: var(--blue-bg); color: var(--blue-text); }
+    .badge-success { background-color: var(--success-bg); color: var(--success-text); }
+
+    .helpline-card h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.1rem;
+      color: var(--text-main);
+    }
+
+    .helpline-card p {
+      margin: 0 0 16px 0;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      flex-grow: 1;
+    }
+
+    .btn-call {
+      background-color: var(--pink-main);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.15s ease;
+      min-height: 44px; /* Tamaño mínimo para táctil */
+    }
+
+    .btn-call:hover {
+      background-color: var(--pink-hover);
+    }
+
+    /* SECCIÓN EXCLUSIVA DE ATENCIÓN A HOMBRES (AZUL) */
+    .mens-section {
+      background-color: var(--blue-bg);
+      border: 1px solid var(--blue-border);
+      border-left: 6px solid var(--blue-main);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 40px;
+    }
+
+    .mens-header {
+      margin-bottom: 20px;
+    }
+
+    .mens-header h2 {
+      margin: 0 0 6px 0;
+      color: var(--blue-text);
+      font-size: 1.3rem;
+    }
+
+    .mens-header p {
+      margin: 0;
+      color: #1e3a8a;
+      font-size: 0.95rem;
+    }
+
+    .mens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .mens-card {
+      background: #ffffff;
+      border: 1px solid var(--blue-border);
+      border-radius: 8px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .mens-card h3 {
+      margin: 0 0 6px 0;
+      font-size: 1rem;
+      color: var(--blue-text);
+    }
+
+    .mens-card p {
+      margin: 0 0 14px 0;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    .btn-call-blue {
+      background-color: var(--blue-main);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-align: center;
+      display: block;
+      transition: background-color 0.15s ease;
+      min-height: 44px; /* Tamaño mínimo para táctil */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-call-blue:hover {
+      background-color: var(--blue-hover);
+    }
+
+    /* Navegación por pestañas */
+    .tabs-container {
+      background: var(--bg-card);
+      border: 1px solid var(--pink-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 40px;
+    }
+
+    .tabs-header {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      white-space: nowrap;
+      min-height: 44px; /* Tamaño mínimo para táctil */
+      display: flex;
+      align-items: center;
+    }
+
+    .tab-btn.active {
+      color: var(--pink-main);
+      border-bottom-color: var(--pink-main);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Bloque Violentómetro */
+    .level-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+    }
+
+    .level-1 { background-color: #fffbeb; border-left: 5px solid #f59e0b; }
+    .level-2 { background-color: #fff7ed; border-left: 5px solid #ea580c; }
+    .level-3 { background-color: #fef2f2; border-left: 5px solid #dc2626; }
+
+    .level-box h4 { margin: 0 0 6px 0; font-size: 0.95rem; }
+    .level-box ul { margin: 0; padding-left: 20px; font-size: 0.875rem; color: var(--text-muted); }
+
+    .steps-list { padding-left: 20px; margin: 0; }
+    .steps-list li { margin-bottom: 12px; font-size: 0.95rem; color: var(--text-muted); }
+
+    /* Acordeón FAQ */
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      background: var(--bg-subtle);
+      border: none;
+      padding: 14px 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 50px; /* Más espacio para táctil */
+    }
+
+    .faq-answer {
+      padding: 14px 18px;
+      display: none;
+      background: var(--bg-card);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .faq-item.open .faq-answer { display: block; }
+
+    /* Tarjetas de contenido informativo */
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .info-card h3 {
+      margin: 0 0 12px 0;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    .info-card p {
+      margin: 0 0 10px 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .info-card ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .info-card li {
+      margin-bottom: 8px;
+    }
+
+    /* Tabla de derechos - Responsive */
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 20px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .rights-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      min-width: 500px; /* Fuerza scroll en móviles */
+    }
+
+    .rights-table th {
+      background-color: var(--pink-bg);
+      color: var(--pink-text);
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid var(--pink-border);
+      position: sticky;
+      top: 0;
+    }
+
+    .rights-table td {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+
+    .rights-table tr:nth-child(even) {
+      background-color: var(--bg-subtle);
+    }
+
+    /* Testimonios */
+    .testimonial {
+      background: var(--bg-card);
+      border-left: 4px solid var(--pink-main);
+      border-radius: 6px;
+      padding: 18px;
+      margin-bottom: 16px;
+      font-style: italic;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--text-main);
+      font-style: normal;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    /* Cajas de alerta */
+    .alert-box {
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-left: 4px solid;
+    }
+
+    .alert-info {
+      background-color: #eff6ff;
+      border-left-color: #2563eb;
+      color: #1e40af;
+    }
+
+    .alert-warning {
+      background-color: #fffbeb;
+      border-left-color: #f59e0b;
+      color: #b45309;
+    }
+
+    .alert-success {
+      background-color: var(--success-bg);
+      border-left-color: var(--success);
+      color: var(--success-text);
+    }
+
+    /* Columnas de contenido */
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer p {
+      margin: 8px 0;
+    }
+
+    /* ============================================
+       MEDIA QUERIES - RESPONSIVE DESIGN
+       ============================================ */
+
+    /* Tablets y pantallas medianas */
+    @media (max-width: 900px) {
+      .main-wrapper {
+        max-width: 100%;
+        padding: 20px 12px 40px 12px;
+      }
+
+      .directory-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .mens-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Móviles y pantallas pequeñas */
+    @media (max-width: 600px) {
+      .sticky-safety-bar {
+        padding: 8px 12px;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .safety-hint {
+        font-size: 0.75rem;
+        text-align: center;
+        justify-content: center;
+      }
+
+      .btn-quick-exit {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.9rem;
+        padding: 10px 20px;
+      }
+
+      header {
+        padding: 20px 16px;
+      }
+
+      header h1 {
+        font-size: 1.4rem;
+      }
+
+      header p {
+        font-size: 0.9rem;
+      }
+
+      .emergency-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+      }
+
+      .emergency-text h2 {
+        font-size: 1.1rem;
+      }
+
+      .btn-emergency {
+        width: 100%;
+      }
+
+      .section-header h2 {
+        font-size: 1.15rem;
+      }
+
+      .directory-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .mens-section {
+        padding: 20px 16px;
+      }
+
+      .mens-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .mens-header h2 {
+        font-size: 1.15rem;
+      }
+
+      .tabs-container {
+        padding: 16px;
+      }
+
+      .tab-btn {
+        font-size: 0.85rem;
+        padding: 10px 12px;
+      }
+
+      .two-column {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .info-card {
+        padding: 16px;
+      }
+
+      .testimonial {
+        padding: 14px;
+      }
+
+      .section {
+        margin-bottom: 32px;
+      }
+
+      .main-wrapper {
+        padding: 16px 12px 32px 12px;
+      }
+    }
+
+    /* Móviles muy pequeños */
+    @media (max-width: 380px) {
+      header h1 {
+        font-size: 1.25rem;
+      }
+
+      .section-header h2 {
+        font-size: 1.05rem;
+      }
+
+      .tab-btn {
+        font-size: 0.8rem;
+        padding: 8px 10px;
+      }
+
+      .faq-question {
+        font-size: 0.85rem;
+        padding: 12px 14px;
+      }
+    }
+
+    /* Modo oscuro automático del sistema */
+    @media (prefers-color-scheme: dark) {
+      /* Opcional: mantener el tema claro siempre para evitar problemas de legibilidad */
+    }
+
+    /* Accesibilidad: reducir animaciones */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Impresión */
+    @media print {
+      .sticky-safety-bar,
+      .btn-quick-exit,
+      .btn-emergency,
+      .btn-call,
+      .btn-call-blue {
+        display: none;
+      }
+
+      .main-wrapper {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      body {
+        background: white;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Fija de Seguridad -->
+  <div class="sticky-safety-bar">
+    <div class="safety-hint">
+      Navegación discreta. Presiona ESC dos veces para salir rápido.
+    </div>
+    <button class="btn-quick-exit" onclick="quickExit()">Salida Rápida</button>
+  </div>
+
+  <div class="main-wrapper">
+
+    <!-- Encabezado Feminista -->
+    <header>
+      <h1>Espacio de Apoyo y Atención a Mujeres</h1>
+      <p>Directorio integral de información, asesoría jurídica, contención emocional y recursos de protección para víctimas de violencia machista y de género. Este espacio es seguro, confidencial y está diseñado para apoyarte en cada paso del camino.</p>
+    </header>
+
+    <!-- Caja de Emergencia -->
+    <div class="emergency-card">
+      <div class="emergency-text">
+        <h2>Riesgo inminente o agresión activa</h2>
+        <p>Si tu vida o la de alguien más está en peligro inmediato, contacta a la policía o llama al número de emergencia de tu país.</p>
+      </div>
+      <a href="tel:123" class="btn-emergency">Llamar al 123</a>
+    </div>
+
+    <!-- Directorio Principal de Orientación a Mujeres -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Líneas de atención para mujeres</h2>
+        <p>Servicios gratuitos de orientación especializada, denuncias y contención emocional disponibles 24/7.</p>
+      </div>
+
+      <div class="directory-grid">
+        
+        <div class="helpline-card">
+          <div>
+            <span class="badge badge-pink">Orientación 24/7</span>
+            <h3>Línea 155 - Mujeres</h3>
+            <p>Atención profesional en rutas de protección, violencia intrafamiliar, asesoría psicológica y orientación legal. Confidencial y gratuita desde cualquier teléfono.</p>
+          </div>
+          <a href="tel:155" class="btn-call">Llamar a la Línea 155</a>
+        </div>
+
+        <div class="helpline-card">
+          <div>
+            <span class="badge badge-pink">Legal y Denuncias</span>
+            <h3>Línea 122 - Fiscalía</h3>
+            <p>Recepción de denuncias por agresiones físicas, acoso, violencia sexual, amenazas y otros delitos. Asesoría sobre procedimientos legales y medidas de protección.</p>
+          </div>
+          <a href="tel:122" class="btn-call">Llamar a la Línea 122</a>
+        </div>
+
+        <div class="helpline-card">
+          <div>
+            <span class="badge badge-pink">Apoyo Emocional</span>
+            <h3>Línea de Salud Mental</h3>
+            <p>Acompañamiento profesional inmediato para manejo de trauma, situaciones de crisis, depresión y ansiedad relacionada con violencia.</p>
+          </div>
+          <a href="tel:018000112137" class="btn-call">Llamar a Salud Mental</a>
+        </div>
+
+        <div class="helpline-card">
+          <div>
+            <span class="badge badge-pink">Albergues y Refugios</span>
+            <h3>Red de Protección Integral</h3>
+            <p>Acceso a albergues seguros, refugios temporales, asistencia social y programas de reinserción para mujeres en situación de riesgo extremo.</p>
+          </div>
+          <a href="tel:155" class="btn-call">Solicitar refugio seguro</a>
+        </div>
+
+        <div class="helpline-card">
+          <div>
+            <span class="badge badge-pink">Asesoría Legal Gratuita</span>
+            <h3>Línea de Abogadas Especializadas</h3>
+            <p>Consulta legal gratuita sobre divorcio, custodia, pensión alimentaria, medidas cautelares y procesos judiciales en casos de violencia de género.</p>
+          </div>
+          <a href="tel:155" class="btn-call">Hablar con una abogada</a>
+        </div>
+
+        <div class="helpline-card">
+          <div>
+            <span class="badge badge-pink">Apoyo Laboral</span>
+            <h3>Programa de Reinserción Laboral</h3>
+            <p>Capacitación, búsqueda de empleo y apoyo para mujeres que necesitan independencia económica y reconstruir sus vidas después de la violencia.</p>
+          </div>
+          <a href="tel:155" class="btn-call">Conocer programas laborales</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN: TIPOS DE VIOLENCIA -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Tipos de violencia de género</h2>
+        <p>La violencia no siempre es física. Reconocer todas sus formas es el primer paso para identificar si estás siendo víctima.</p>
+      </div>
+
+      <div class="two-column">
+        <div class="info-card">
+          <h3>Violencia Física</h3>
+          <p>Cualquier acción que cause daño corporal: golpes, empujones, quemaduras, heridas con objetos, asfixia o cualquier contacto no consentido que cause dolor o lesiones.</p>
+          <p><strong>Señales:</strong> Moretones, fracturas, quemaduras, cicatrices, heridas frecuentes.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Violencia Psicológica</h3>
+          <p>Acciones que generan daño emocional: insultos, humillaciones, amenazas, intimidación, control, aislamiento, chantaje emocional o manipulación constante.</p>
+          <p><strong>Señales:</strong> Baja autoestima, ansiedad, depresión, miedo, inseguridad, cambios de comportamiento.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Violencia Sexual</h3>
+          <p>Cualquier acto sexual no consentido: violación, abuso sexual, acoso sexual, obligación a ver pornografía, o cualquier contacto sexual forzado dentro o fuera de la relación.</p>
+          <p><strong>Señales:</strong> Trauma, miedo, cambios en la sexualidad, infecciones, embarazos no deseados.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Violencia Económica</h3>
+          <p>Control del dinero, prohibición de trabajar, robo de ingresos, endeudamiento sin consentimiento, negación de recursos básicos o control de gastos.</p>
+          <p><strong>Señales:</strong> Dependencia económica, falta de acceso a dinero, imposibilidad de tomar decisiones financieras.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Violencia Social</h3>
+          <p>Aislamiento de familia y amigos, prohibición de trabajar, control de comunicaciones, humillación pública, difamación o exclusión de actividades sociales.</p>
+          <p><strong>Señales:</strong> Aislamiento, pérdida de amistades, dependencia del agresor, soledad.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Violencia Patrimonial</h3>
+          <p>Destrucción de bienes personales, retención de documentos, daño a propiedades, sustracción de herencias o negación de acceso a vivienda.</p>
+          <p><strong>Señales:</strong> Pérdida de bienes, documentos extraviados, imposibilidad de acceder a propiedades.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: CICLO DE LA VIOLENCIA -->
+    <section class="section">
+      <div class="section-header">
+        <h2>El ciclo de la violencia</h2>
+        <p>La violencia en las relaciones suele seguir un patrón predecible. Entender este ciclo te ayuda a reconocer la situación y planificar tu salida.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Fase 1: Acumulación de Tensión</h3>
+        <p>El ambiente se vuelve tenso. Hay discusiones frecuentes, críticas constantes, cambios de humor impredecibles. La víctima intenta "mantener la paz" evitando ciertos temas o comportamientos. Esta fase puede durar días, semanas o meses.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Fase 2: Incidente Agudo</h3>
+        <p>Ocurre la agresión física, psicológica o sexual. Es el momento de mayor violencia. La víctima puede estar en shock, confundida o asustada. Después del incidente, hay una sensación de alivio temporal.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Fase 3: Reconciliación (Luna de Miel)</h3>
+        <p>El agresor se disculpa, promete cambiar, ofrece regalos o muestras de afecto. La víctima quiere creer que las cosas mejorarán. Esta fase refuerza la esperanza de que "esta vez será diferente" y mantiene el ciclo.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Fase 4: Calma Relativa</h3>
+        <p>Hay un período de paz aparente. Todo parece normal. Sin embargo, la tensión comienza a acumularse nuevamente, iniciando el ciclo de nuevo. Este patrón se repite una y otra vez, frecuentemente con mayor intensidad.</p>
+      </div>
+
+      <div class="alert-box alert-warning">
+        <strong>Importante:</strong> Cada ciclo tiende a intensificarse. Lo que comenzó como insultos puede escalar a violencia física. Reconocer este patrón es crucial para tu seguridad.
+      </div>
+    </section>
+
+    <!-- SECCIÓN AZUL: ORIENTACIÓN Y APOYO A HOMBRES -->
+    <section class="mens-section">
+      <div class="mens-header">
+        <h2>Orientación para hombres víctimas de violencia doméstica</h2>
+        <p>Los hombres también experimentan maltrato físico, psicológico o emocional en el entorno familiar. Romper el silencio es el primer paso para recibir protección legal y apoyo. Tu experiencia es válida y mereces ayuda.</p>
+      </div>
+
+      <div class="mens-grid">
+        
+        <div class="mens-card">
+          <div>
+            <h3>Orientación Legal y Denuncia</h3>
+            <p>La Ley protege a toda persona víctima de violencia intrafamiliar, independientemente del género. Puedes interponer denuncias y solicitar medidas de protección con el mismo derecho que cualquier otra víctima.</p>
+          </div>
+          <a href="tel:122" class="btn-call-blue">Denunciar en la Línea 122</a>
+        </div>
+
+        <div class="mens-card">
+          <div>
+            <h3>Atención Psicológica y Emocional</h3>
+            <p>Servicio gratuito de escucha confidencial para hombres en crisis, situaciones de maltrato, conflicto familiar o trauma emocional. Los profesionales entienden tu situación sin juzgar.</p>
+          </div>
+          <a href="tel:018000112137" class="btn-call-blue">Llamar a Apoyo Psicológico</a>
+        </div>
+
+        <div class="mens-card">
+          <div>
+            <h3>Comisaría de Familia</h3>
+            <p>Atención presencial para la fijación de medidas de alejamiento, protección y restricción de contacto en casos de agresión dentro del hogar. Tus derechos son iguales.</p>
+          </div>
+          <a href="tel:123" class="btn-call-blue">Solicitar orientación rápida</a>
+        </div>
+
+        <div class="mens-card">
+          <div>
+            <h3>Asesoría en Custodia y Derechos Paternales</h3>
+            <p>Información sobre tus derechos como padre, custodia compartida, pensión alimentaria y protección de tus hijos en contextos de violencia doméstica.</p>
+          </div>
+          <a href="tel:122" class="btn-call-blue">Consultar derechos paternales</a>
+        </div>
+
+        <div class="mens-card">
+          <div>
+            <h3>Apoyo para Romper el Silencio</h3>
+            <p>Espacios seguros para hombres que enfrentan estigma social. Tu situación no es debilidad. Muchos hombres viven violencia y buscar ayuda es un acto de valentía.</p>
+          </div>
+          <a href="tel:155" class="btn-call-blue">Hablar en confianza</a>
+        </div>
+
+        <div class="mens-card">
+          <div>
+            <h3>Reinserción y Reconstrucción</h3>
+            <p>Programas de apoyo para reconstruir tu vida después de la violencia: empleo, vivienda, redes de apoyo y herramientas para sanar.</p>
+          </div>
+          <a href="tel:155" class="btn-call-blue">Conocer programas de apoyo</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECCIÓN: DERECHOS LEGALES -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Tus derechos legales</h2>
+        <p>Como víctima de violencia de género, tienes derechos específicos protegidos por la ley. Conocerlos te empodera.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="rights-table">
+          <thead>
+            <tr>
+              <th>Derecho</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Derecho a la Protección</strong></td>
+              <td>Acceso a medidas de protección cautelar: orden de alejamiento, prohibición de contacto, custodia temporal de hijos.</td>
+            </tr>
+            <tr>
+              <td><strong>Derecho a la Denuncia</strong></td>
+              <td>Presentar denuncias ante la Fiscalía, Policía o Comisaría de Familia sin costo alguno, en cualquier momento.</td>
+            </tr>
+            <tr>
+              <td><strong>Derecho a Asesoría Legal</strong></td>
+              <td>Acceso a abogadas especializadas en violencia de género de forma gratuita para procesos civiles y penales.</td>
+            </tr>
+            <tr>
+              <td><strong>Derecho a la Salud</strong></td>
+              <td>Atención médica gratuita para lesiones, exámenes forenses, atención psicológica y tratamiento de traumas.</td>
+            </tr>
+            <tr>
+              <td><strong>Derecho a Albergue</strong></td>
+              <td>Acceso a refugios seguros y temporales para ti y tus hijos si estás en riesgo inmediato.</td>
+            </tr>
+            <tr>
+              <td><strong>Derecho a Pensión Alimentaria</strong></td>
+              <td>Derecho a solicitar pensión para ti y tus hijos, incluso durante procesos de separación o divorcio.</td>
+            </tr>
+            <tr>
+              <td><strong>Derecho a Custodia</strong></td>
+              <td>Protección de tus derechos como madre/padre y derecho a custodia compartida o exclusiva según sea necesario.</td>
+            </tr>
+            <tr>
+              <td><strong>Derecho a Confidencialidad</strong></td>
+              <td>Protección de tu identidad en procesos legales y acceso a información confidencial sobre tu caso.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Módulo Informativo por Pestañas -->
+    <section class="tabs-container">
+      <div class="section-header">
+        <h2>Guías prácticas y recursos</h2>
+        <p>Información útil para identificar la violencia, protegerte y planificar tu salida segura.</p>
+      </div>
+
+      <div class="tabs-header">
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-violentometro')">Escala de Riesgo</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-plan')">Plan de Salida Segura</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-signals')">Señales de Alerta</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-faq')">Preguntas Frecuentes</button>
+      </div>
+
+      <!-- Tab 1: Violentómetro -->
+      <div id="tab-violentometro" class="tab-content active">
+        <p style="margin-bottom: 16px; color: var(--text-muted);">El violentómetro es una herramienta para evaluar el nivel de riesgo en tu relación. Reconocer dónde estás te ayuda a tomar decisiones informadas.</p>
+        
+        <div class="level-box level-1">
+          <h4 style="color: #b45309;">Nivel 1: Señales iniciales (Riesgo Bajo)</h4>
+          <ul>
+            <li>Humillaciones ocasionales, críticas frecuentes sobre tu apariencia o comportamiento.</li>
+            <li>Celos desmedidos, prohibiciones sobre ropa, amistades o actividades.</li>
+            <li>Revisión involuntaria del teléfono, redes sociales o correo.</li>
+            <li>Control económico leve, necesidad de pedir permiso para gastos.</li>
+            <li>Amenazas vagas o bromas hirientes que generan incomodidad.</li>
+          </ul>
+        </div>
+
+        <div class="level-box level-2">
+          <h4 style="color: #c2410c;">Nivel 2: Agresión visible (Riesgo Moderado)</h4>
+          <ul>
+            <li>Empujones, jalones de cabello, lanzamiento de objetos.</li>
+            <li>Destrucción deliberada de tus pertenencias o cosas que valoras.</li>
+            <li>Insultos recurrentes, gritos, humillación en público.</li>
+            <li>Aislamiento activo de familia, amigos o redes de apoyo.</li>
+            <li>Control total del dinero, prohibición de trabajar o estudiar.</li>
+            <li>Amenazas de quitarte a los hijos o de suicidio.</li>
+          </ul>
+        </div>
+
+        <div class="level-box level-3">
+          <h4 style="color: #b91c1c;">Nivel 3: Riesgo vital (Riesgo Alto)</h4>
+          <ul>
+            <li>Amenazas directas con armas, cuchillos, objetos contundentes.</li>
+            <li>Golpes, puñetazos, patadas o agresiones físicas graves.</li>
+            <li>Violencia sexual o violación dentro de la relación.</li>
+            <li>Estrangulamiento, asfixia o intentos de sofocación.</li>
+            <li>Amenazas de muerte dirigidas a ti, tus hijos o familiares.</li>
+            <li>Comportamiento impredecible y extremadamente violento.</li>
+            <li>Obsesión con armas o acceso fácil a ellas.</li>
+          </ul>
+        </div>
+
+        <div class="alert-box alert-warning">
+          <strong>Si te encuentras en Nivel 3:</strong> Tu vida está en peligro. Llama inmediatamente a emergencias (123) o busca refugio seguro. No intentes resolver esto solo.
+        </div>
+      </div>
+
+      <!-- Tab 2: Plan de Salida Segura -->
+      <div id="tab-plan" class="tab-content">
+        <p style="margin-bottom: 16px; color: var(--text-muted);">Un plan de salida segura te prepara para actuar rápidamente si la situación se vuelve peligrosa. Planificar no significa que vayas a irte inmediatamente, pero te da opciones.</p>
+        
+        <ol class="steps-list">
+          <li><strong>Documentos a la mano:</strong> Reúne cédulas, pasaportes, documentos de tus hijos, certificados de nacimiento, registros médicos y escolares. Guárdalos en una bolsa pequeña o caja que puedas llevar rápidamente. Considera hacer copias digitales en una nube segura.</li>
+          
+          <li><strong>Dinero de emergencia:</strong> Ahorra dinero en efectivo en un lugar seguro que solo tú conozcas: debajo del colchón, en casa de una amiga de confianza, o en una cuenta bancaria secreta. Idealmente, guarda entre 2 y 4 semanas de gastos básicos.</li>
+          
+          <li><strong>Contacto de emergencia:</strong> Define una clave de mensaje con alguien de confianza (amiga, familiar, profesional) que signifique "pedir ayuda inmediata". Por ejemplo: "Necesito hablar sobre la receta de la abuela" podría significar que necesitas rescate urgente.</li>
+          
+          <li><strong>Refugio seguro identificado:</strong> Identifica el lugar exacto a dónde ir en caso de emergencia nocturna: casa de una amiga, familiar, albergue, comisaría o iglesia. Conoce la dirección y cómo llegar sin depender del agresor.</li>
+          
+          <li><strong>Ruta de escape:</strong> Memoriza rutas alternas desde tu casa, trabajo y lugares que frecuentas. Identifica lugares públicos seguros, comisarías cercanas y paradas de transporte público.</li>
+          
+          <li><strong>Teléfono seguro:</strong> Considera tener un teléfono móvil que el agresor no conozca. Guarda los números de emergencia, líneas de atención y contactos de confianza. Carga la batería regularmente.</li>
+          
+          <li><strong>Código de seguridad con hijos:</strong> Si tienes hijos, enséñales un código simple que signifique "debemos irnos ahora" sin alarmarlos. Practica dónde ir y qué hacer.</li>
+          
+          <li><strong>Ropa y artículos esenciales:</strong> Prepara una mochila pequeña con ropa básica, medicinas, artículos de higiene y cosas importantes para ti y tus hijos. Guárdala en un lugar accesible.</li>
+          
+          <li><strong>Registros de violencia:</strong> Documenta fechas, horas, tipos de agresión y testigos de incidentes violentos. Toma fotos de lesiones. Guarda estos registros en un lugar seguro o comparte con alguien de confianza.</li>
+          
+          <li><strong>Plan post-salida:</strong> Piensa en dónde vivirás, cómo te mantendrás económicamente, cómo accederás a servicios legales y de salud. Contacta a líneas de atención para conocer recursos disponibles.</li>
+        </ol>
+
+        <div class="alert-box alert-info">
+          <strong>Recuerda:</strong> Salir de una relación violenta es un proceso. No necesitas tenerlo todo perfecto. Cada paso que das hacia tu seguridad es importante.
+        </div>
+      </div>
+
+      <!-- Tab 3: Señales de Alerta -->
+      <div id="tab-signals" class="tab-content">
+        <p style="margin-bottom: 16px; color: var(--text-muted);">Estas son señales de que estás en una relación abusiva. Si reconoces varias de estas, es momento de buscar ayuda.</p>
+        
+        <div class="info-card">
+          <h3>Señales de Comportamiento del Agresor</h3>
+          <ul>
+            <li>Cambios drásticos de humor sin razón aparente.</li>
+            <li>Culparte de sus arrebatos: "Me hiciste enojar".</li>
+            <li>Minimizar la violencia: "No fue para tanto" o "Exageras".</li>
+            <li>Negar los hechos: "Eso nunca pasó".</li>
+            <li>Promesas de cambio seguidas de nuevas agresiones.</li>
+            <li>Aislarte de apoyo externo (familia, amigos, trabajo).</li>
+            <li>Control obsesivo de tu ubicación, ropa, dinero.</li>
+            <li>Amenazas de suicidio si te vas.</li>
+            <li>Uso de hijos como herramienta de control.</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <h3>Señales en Ti (Víctima)</h3>
+          <ul>
+            <li>Miedo constante a hacer algo que lo enoje.</li>
+            <li>Baja autoestima, creencia de que mereces el trato.</li>
+            <li>Aislamiento de amigos y familia.</li>
+            <li>Ansiedad, depresión, insomnio o pesadillas.</li>
+            <li>Síntomas físicos: dolores de cabeza, problemas digestivos, fatiga.</li>
+            <li>Cambios en apariencia personal (descuido de ti misma).</li>
+            <li>Disculparte constantemente por cosas que no son tu culpa.</li>
+            <li>Sentir que no puedes hacer nada bien.</li>
+            <li>Pensamientos suicidas o de autolesión.</li>
+            <li>Dificultad para tomar decisiones sin su aprobación.</li>
+          </ul>
+        </div>
+
+        <div class="alert-box alert-warning">
+          <strong>Importante:</strong> Si experimentas varias de estas señales, especialmente síntomas de depresión o pensamientos suicidas, busca ayuda profesional inmediatamente. Llama a la línea de salud mental o acude a un hospital.
+        </div>
+      </div>
+
+      <!-- Tab 4: FAQ -->
+      <div id="tab-faq" class="tab-content">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Por qué no simplemente me voy?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            Salir de una relación violenta es complejo. Hay barreras emocionales (miedo, culpa, esperanza de cambio), económicas (dependencia financiera), sociales (vergüenza, presión familiar) y de seguridad (riesgo de escalada de violencia). Estadísticamente, el momento más peligroso es cuando la víctima intenta irse. Por eso es importante planificar cuidadosamente y buscar apoyo profesional.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Un hombre/mujer puede solicitar una medida de protección?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            Sí. Las Comisarías de Familia, Fiscalía y Juzgados reciben solicitudes de protección por violencia intrafamiliar sin importar el sexo de la víctima. Las medidas incluyen orden de alejamiento, prohibición de contacto, custodia temporal y otras protecciones legales.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿La atención de estas líneas tiene algún costo?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            No. Todas las líneas de atención (155, 122, 123, línea de salud mental) son gratuitas y funcionan desde cualquier teléfono celular o fijo, incluso sin saldo. Algunos servicios de albergue y asesoría legal también son gratuitos para víctimas de violencia.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Qué pasa si denuncio? ¿Me protegerán?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            Al denunciar, inicias un proceso legal que puede resultar en medidas de protección cautelar (orden de alejamiento, prohibición de contacto). Las autoridades están obligadas a investigar. Tienes derecho a asesoría legal gratuita y a ser informada sobre el progreso del caso. Si sientes que no estás siendo protegida, puedes solicitar medidas adicionales.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Cómo protejo a mis hijos en una relación violenta?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            Los hijos de víctimas de violencia también son víctimas (violencia intrafamiliar). Puedes solicitar custodia exclusiva, restricción de contacto del agresor con los hijos, y programas de apoyo psicológico. Documenta cualquier comportamiento violento del agresor hacia los niños. Busca asesoría legal especializada en custodia.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Puedo cambiar de opinión después de denunciar?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            En muchos casos, una vez iniciado un proceso penal por violencia intrafamiliar, la Fiscalía continúa la investigación incluso si retiras la denuncia. Esto es para protegerte, ya que muchas víctimas son presionadas para retirar denuncias. Sin embargo, puedes solicitar medidas de protección civil (orden de alejamiento) de forma independiente.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Qué hago si no tengo dinero para irme?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            Existen albergues gratuitos, programas de asistencia social, y líneas de atención que pueden conectarte con recursos. Puedes acceder a refugio temporal, comida, ropa y ayuda para encontrar empleo. Llama a la línea 155 para conocer qué recursos hay disponibles en tu área.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Cómo sé si estoy en peligro de muerte?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            Factores de riesgo alto incluyen: amenazas explícitas de muerte, acceso a armas, violencia sexual, estrangulamiento previo, obsesión con armas, comportamiento cada vez más violento, aislamiento extremo, y amenazas de suicidio. Si reconoces varios de estos, tu riesgo es alto. Busca ayuda profesional inmediatamente.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Cómo apoyo a una amiga en esta situación?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            Escúchala sin juzgar, cree en su historia, ofrécele apoyo emocional consistente, ayúdala a conectar con recursos profesionales, respeta su ritmo (salir toma tiempo), ofrécele refugio seguro si lo necesita, y documenta incidentes si es seguro hacerlo. No le digas "simplemente vete" - entiende que es complejo.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            ¿Hay apoyo para víctimas de violencia sexual?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            Sí. Existen líneas especializadas, servicios de atención integral (médica, psicológica, legal), y protocolos de denuncia confidencial. Puedes acceder a exámenes forenses, pruebas de VIH/ITS, anticonceptivos de emergencia, y apoyo psicológico. No es necesario denunciar para acceder a atención médica y psicológica.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: TESTIMONIOS -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Historias de esperanza</h2>
+        <p>Estas historias (ficticias pero basadas en casos reales) muestran que es posible salir de la violencia y reconstruir una vida digna.</p>
+      </div>
+
+      <div class="testimonial">
+        "Pasé 8 años en una relación donde me controlaba todo: dinero, ropa, amigos. Creía que era normal. Un día, una amiga me preguntó si estaba feliz. Esa pregunta cambió todo. Llamé a la línea 155, y me conectaron con un albergue. Hoy, 3 años después, tengo mi propio apartamento, trabajo como asistente administrativo, y mis hijos están en terapia. No fue fácil, pero valió la pena."
+        <div class="testimonial-author">— María, 34 años</div>
+      </div>
+
+      <div class="testimonial">
+        "Mi pareja me pegaba regularmente. Pensé que era mi culpa, que merecía el trato. Cuando me atreví a denunciar, recibí una orden de alejamiento. Ahora tengo custodia exclusiva de mis hijos. La línea 122 fue crucial - los abogados me ayudaron gratis. Estoy reconstruyendo mi vida lentamente, pero con esperanza."
+        <div class="testimonial-author">— Carlos, 41 años</div>
+      </div>
+
+      <div class="testimonial">
+        "Salí de casa con mis dos hijas con solo una mochila. El albergue nos dio refugio, comida, y conexión con servicios de salud mental. Ahora trabajo en un programa de reinserción laboral. Mis hijas van a la escuela. No es perfecto, pero somos libres. Eso es lo más importante."
+        <div class="testimonial-author">— Alejandra, 29 años</div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: RECURSOS ADICIONALES -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Recursos adicionales y apoyo continuo</h2>
+        <p>Más allá de las líneas de emergencia, existen recursos para apoyo a largo plazo y reconstrucción de vida.</p>
+      </div>
+
+      <div class="two-column">
+        <div class="info-card">
+          <h3>Apoyo Psicológico a Largo Plazo</h3>
+          <p>Terapia individual y grupal para procesar trauma, reconstruir autoestima y desarrollar herramientas de sanación. Muchos centros de salud ofrecen atención gratuita o de bajo costo.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Grupos de Apoyo</h3>
+          <p>Espacios seguros donde conectar con otras víctimas, compartir experiencias y aprender estrategias de recuperación. Reducen el aislamiento y fortalecen la red de apoyo.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Asesoría Legal Especializada</h3>
+          <p>Abogadas especializadas en violencia de género para procesos de divorcio, custodia, pensión alimentaria y medidas de protección permanentes.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Programas de Empleo</h3>
+          <p>Capacitación laboral, búsqueda de empleo y apoyo para mujeres y hombres que necesitan independencia económica después de la violencia.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Vivienda de Transición</h3>
+          <p>Programas que ofrecen vivienda temporal mientras te estabilizas económicamente y planificas tu futuro independiente.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Apoyo para Hijos</h3>
+          <p>Terapia especializada para niños y adolescentes que han presenciado o experimentado violencia, con enfoque en recuperación y desarrollo saludable.</p>
+        </div>
+      </div>
+
+      <div class="alert-box alert-success">
+        <strong>Recuerda:</strong> La recuperación es un proceso. Cada día que vives en seguridad es una victoria. Mereces una vida libre de violencia, llena de dignidad y respeto.
+      </div>
+    </section>
+
+    <!-- SECCIÓN: CÓMO AYUDAR A OTROS -->
+    <section class="section">
+      <div class="section-header">
+        <h2>Si conoces a alguien en esta situación</h2>
+        <p>Tu apoyo puede ser la diferencia entre la vida y la muerte. Aquí hay formas seguras de ayudar.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Escucha sin juzgar</h3>
+        <p>Cree en su historia. No le cuestiones por qué no se va. No minimices su experiencia. Tu validación es crucial para que se atreva a buscar ayuda.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Ofrece apoyo práctico</h3>
+        <p>Ayuda a documentar incidentes, acompaña a citas médicas o legales, ofrécele refugio temporal, cuida sus hijos mientras busca ayuda, o simplemente mantén contacto regular.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Proporciona información de recursos</h3>
+        <p>Comparte números de líneas de atención, direcciones de albergues, información sobre medidas de protección. Hazlo de forma discreta para no poner en riesgo su seguridad.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Respeta su ritmo</h3>
+        <p>Salir de una relación violenta es un proceso. Puede tomar meses o años. No la presiones. Mantén la puerta abierta sin importar cuántas veces intente y fracase.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Protege su seguridad</h3>
+        <p>No le hables sobre su situación en público o frente al agresor. No le llames a números que el agresor pueda ver. Usa códigos seguros para comunicarte. Tu discreción puede salvar su vida.</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Busca ayuda profesional</h3>
+        <p>Si crees que está en peligro inmediato, llama a emergencias. Si necesitas orientación sobre cómo ayudar, contacta a líneas de atención - ellas pueden asesorarte.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p><strong>Este sitio es exclusivamente de orientación y apoyo.</strong></p>
+      <p>Ante un peligro activo, acude inmediatamente a las autoridades locales o llama a emergencias.</p>
+      <p>Si experimentas pensamientos suicidas, llama a la línea de salud mental o acude a un hospital de emergencia.</p>
+      <p>Todos los servicios mencionados son gratuitos y confidenciales. Tu seguridad y dignidad son nuestras prioridades.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    function quickExit() {
+      window.location.replace("https://www.google.com");
+    }
+
+    let escCount = 0;
+    let escTimer;
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        escCount++;
+        if (escCount === 2) {
+          quickExit();
+        }
+        clearTimeout(escTimer);
+        escTimer = setTimeout(() => { escCount = 0; }, 1000);
+      }
+    });
+
+    function switchTab(event, tabId) {
+      const tabs = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-btn');
+
+      tabs.forEach(tab => tab.classList.remove('active'));
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    function toggleFaq(button) {
+      const item = button.parentElement;
+      const isOpen = item.classList.contains('open');
+      
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+
+      if (!isOpen) {
+        item.classList.add('open');
+      }
+    }
+  </script>
+
+</body>
+</html>
