@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio El Socorro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #09090b;
+            --bg-card: #18181b;
+            --text-main: #f8fafc;
+            --text-muted: #a1a1aa;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --danger: #ef4444;
+            --border: #27272a;
+            --btn-text: #ffffff;
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-tema="claro"] {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --border: #e2e8f0;
+            --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: rgba(9, 9, 11, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        [data-tema="claro"] header {
+            background-color: rgba(248, 250, 252, 0.85);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--accent);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.activo {
+            color: var(--accent);
+        }
+
+        #btn-tema {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #btn-tema:hover {
+            border-color: var(--text-muted);
+        }
+
+        #btn-tema svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .icono-sol, .icono-luna {
+            transform-origin: center;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .icono-luna {
+            opacity: 0;
+            transform: scale(0.5) rotate(-90deg);
+            position: absolute;
+        }
+
+        .icono-sol {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        [data-tema="claro"] .icono-sol {
+            opacity: 0;
+            transform: scale(0.5) rotate(90deg);
+        }
+
+        [data-tema="claro"] .icono-luna {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        #seccion-categorias {
+            display: none;
+            animation: subir 0.4s ease-out forwards;
+        }
+
+        .grid-categorias {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tarjeta-categoria {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-card);
+        }
+
+        .tarjeta-categoria:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .icono-cat {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            color: var(--accent);
+        }
+
+        .icono-cat svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .tarjeta-categoria h3 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-bottom: 0.4rem;
+        }
+
+        .tarjeta-categoria p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 4rem 1.5rem 2rem 1.5rem;
+            margin-top: auto;
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .footer-col p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        #modal-formulario, #modal-texto {
+            visibility: hidden;
+            opacity: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        #modal-formulario.activo, #modal-texto.activo {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-contenido {
+            background-color: var(--bg-main);
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: var(--shadow-hover);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        #modal-formulario.activo .modal-contenido, 
+        #modal-texto.activo .modal-contenido {
+            transform: translateY(0);
+        }
+
+        .btn-cerrar {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .btn-cerrar:hover {
+            color: var(--danger);
+        }
+
+        #titulo-form, #titulo-texto {
+            margin-top: 0;
+            border-bottom: none;
+            margin-bottom: 1.5rem;
+            padding-right: 2rem;
+        }
+
+        .info-bloque {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-bloque:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .info-bloque h3 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-bloque p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            form { grid-template-columns: 1fr 1fr; }
+            #descripcion, button[type="submit"], #zona-imagen { grid-column: span 2; }
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        #zona-imagen {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            background-color: var(--bg-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            color: var(--text-muted);
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        #zona-imagen:hover {
+            border-color: var(--accent);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        #vista-previa {
+            display: none;
+            max-height: 120px;
+            border-radius: 4px;
+            margin-top: 10px;
+            object-fit: contain;
+        }
+
+        button[type="submit"] {
+            padding: 1rem;
+            background-color: var(--accent);
+            color: var(--btn-text);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--accent-hover);
+        }
+
+        #btn-flotante {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--accent);
+            color: var(--btn-text);
+            border: none;
+            border-radius: 50px;
+            padding: 0.85rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            box-shadow: var(--shadow-hover);
+            z-index: 100;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        #btn-flotante svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        #btn-flotante:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .controles-galeria {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .controles-galeria {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        #buscador {
+            width: 100%;
+            max-width: 280px;
+            flex-shrink: 0;
+        }
+
+        /* Carrusel de filtros */
+        #filtros {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 0.4rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+            scroll-behavior: smooth;
+            width: 100%;
+        }
+
+        #filtros::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        #filtros::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #filtros::-webkit-scrollbar-thumb {
+            background-color: var(--border);
+            border-radius: 4px;
+        }
+
+        .filtro-btn {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: inherit;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .filtro-btn:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+        }
+
+        .filtro-btn.activo {
+            background-color: var(--text-main);
+            border-color: var(--text-main);
+            color: var(--bg-main);
+        }
+
+        #contenedor-tarjetas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @keyframes subir {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tarjeta {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            animation: subir 0.5s ease-out forwards;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--text-muted);
+        }
+
+        .tarjeta:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        #pagina-negocio {
+            display: none;
+            padding: 1rem 0 4rem;
+            animation: subir 0.35s ease-out forwards;
+        }
+
+        #pagina-negocio.activa {
+            display: block;
+        }
+
+        .pagina-negocio-contenido {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .pagina-negocio-portada {
+            min-height: 300px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(15, 23, 42, 0.9));
+        }
+
+        .pagina-negocio-portada img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.55;
+        }
+
+        .pagina-negocio-portada::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.05), rgba(15, 23, 42, 0.9));
+        }
+
+        .pagina-negocio-portada-texto {
+            position: relative;
+            z-index: 1;
+        }
+
+        .pagina-negocio-portada h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin: 0.75rem 0 0;
+            color: #fff;
+        }
+
+        .pagina-negocio-portada .cat {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.9);
+            color: #fff;
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .pagina-negocio-cuerpo {
+            padding: 2.5rem;
+        }
+
+        .pagina-negocio-cuerpo h2 {
+            margin-bottom: 0.75rem;
+        }
+
+        .pagina-negocio-descripcion {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .detalles-pagina-negocio {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .detalle-pagina-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+        }
+
+        .detalle-pagina-item strong {
+            color: var(--text-main);
+            font-size: 0.85rem;
+        }
+
+        .detalle-pagina-item a {
+            color: var(--accent);
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        .detalle-pagina-item a:hover {
+            text-decoration: underline;
+        }
+
+        .acciones-pagina-negocio {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-volver-directorio,
+        .btn-accion-pagina {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            border-radius: 9px;
+            padding: 0.75rem 1rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-volver-directorio {
+            margin-bottom: 1rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .btn-volver-directorio:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+        }
+
+        .btn-accion-pagina {
+            background: var(--accent);
+            border: 1px solid var(--accent);
+            color: #fff;
+        }
+
+        .btn-accion-pagina:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-accion-pagina.secundario {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .btn-accion-pagina.peligro {
+            background: transparent;
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        @media (max-width: 600px) {
+            .pagina-negocio-portada {
+                min-height: 240px;
+                padding: 1.5rem;
+            }
+
+            .pagina-negocio-cuerpo {
+                padding: 1.5rem;
+            }
+
+            .acciones-pagina-negocio .btn-accion-pagina,
+            .acciones-pagina-negocio .btn-volver-directorio {
+                width: 100%;
+            }
+        }
+
+        .tarjeta img.logo-tarjeta {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background-color: var(--border);
+            display: none;
+        }
+
+        .contenido-tarjeta {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .tarjeta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .tarjeta h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-like {
+            background: rgba(239, 68, 68, 0.1);
+            border: none;
+            color: var(--danger);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .btn-like:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .tarjeta span.cat {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            align-self: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .tarjeta p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .detalles-negocio {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .detalles-negocio a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .detalles-negocio a:hover {
+            text-decoration: underline;
+        }
+
+        .detalle-calificacion {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .redes {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .redes a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .redes a:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .acciones {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-editar, .btn-eliminar {
+            flex: 1;
+            padding: 0.6rem;
+            border-radius: 8px;
+            background: transparent;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-editar { border: 1px solid var(--accent); color: var(--accent); }
+        .btn-editar:hover { background: rgba(59, 130, 246, 0.1); }
+        
+        .btn-eliminar { border: 1px solid var(--danger); color: var(--danger); }
+        .btn-eliminar:hover { background: rgba(239, 68, 68, 0.1); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                Directorio El Socorro
+            </div>
+            <nav>
+                <a id="nav-inicio" class="nav-link activo">Inicio</a>
+                <a id="nav-categorias" class="nav-link">Categorías</a>
+                <button id="btn-tema" aria-label="Cambiar tema">
+                    <svg viewBox="0 0 24 24" style="position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
+                        <g class="icono-sol">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <line x1="12" y1="2" x2="12" y2="4"></line>
+                            <line x1="12" y1="20" x2="12" y2="22"></line>
+                            <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"></line>
+                            <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"></line>
+                            <line x1="2" y1="12" x2="4" y2="12"></line>
+                            <line x1="20" y1="12" x2="22" y2="12"></line>
+                            <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"></line>
+                            <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"></line>
+                        </g>
+                        <path class="icono-luna" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="galeria">
+            <div class="controles-galeria">
+                <input type="text" id="buscador" placeholder="Buscar negocio...">
+                <div id="filtros">
+                    <button class="filtro-btn activo" data-categoria="Todos">Todos</button>
+                    <button class="filtro-btn" data-categoria="Comida">Comida</button>
+                    <button class="filtro-btn" data-categoria="Café y Postres">Café y Postres</button>
+                    <button class="filtro-btn" data-categoria="Ropa y Calzado">Ropa y Calzado</button>
+                    <button class="filtro-btn" data-categoria="Tecnología">Tecnología</button>
+                    <button class="filtro-btn" data-categoria="Servicios">Servicios</button>
+                    <button class="filtro-btn" data-categoria="Salud y Farmacia">Salud y Farmacia</button>
+                    <button class="filtro-btn" data-categoria="Belleza y Barbería">Belleza y Barbería</button>
+                    <button class="filtro-btn" data-categoria="Educación">Educación</button>
+                    <button class="filtro-btn" data-categoria="Turismo y Hoteles">Turismo y Hoteles</button>
+                    <button class="filtro-btn" data-categoria="Mascotas">Mascotas</button>
+                    <button class="filtro-btn" data-categoria="Hogar y Ferretería">Hogar y Ferretería</button>
+                    <button class="filtro-btn" data-categoria="Artesanías">Artesanías</button>
+                    <button class="filtro-btn" data-categoria="Deportes">Deportes</button>
+                    <button class="filtro-btn" data-categoria="Transporte y Envíos">Transporte y Envíos</button>
+                    <button class="filtro-btn" data-categoria="Papelería y Librería">Papelería y Librería</button>
+                    <button class="filtro-btn" data-categoria="Automotriz">Automotriz</button>
+                    <button class="filtro-btn" data-categoria="Floristería">Floristería</button>
+                    <button class="filtro-btn" data-categoria="Entretenimiento">Entretenimiento</button>
+                    <button class="filtro-btn" data-categoria="Sastrería">Sastrería</button>
+                </div>
+            </div>
+
+            <div id="contenedor-tarjetas"></div>
+        </section>
+
+        <section id="pagina-negocio" aria-hidden="true">
+            <button class="btn-volver-directorio" id="btn-volver-directorio" type="button">← Volver al directorio</button>
+            <div id="detalle-negocio"></div>
+        </section>
+
+        <section id="seccion-categorias">
+            <h2>Explora por Categorías</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Encuentra lo que buscas organizando los emprendimientos de El Socorro por su sector.</p>
+            
+            <div class="grid-categorias">
+                <div class="tarjeta-categoria" data-cat="Comida">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg></div>
+                    <h3>Comida</h3>
+                    <p>Restaurantes y almuerzos típicos.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Café y Postres">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="14" y2="1"></line></svg></div>
+                    <h3>Café y Postres</h3>
+                    <p>Cafeterías y repostería artesanal.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Ropa y Calzado">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H5v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10h1.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg></div>
+                    <h3>Ropa y Calzado</h3>
+                    <p>Moda y tiendas de ropa.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Tecnología">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+                    <h3>Tecnología</h3>
+                    <p>Equipos, repuestos y soporte técnico.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Servicios">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div>
+                    <h3>Servicios</h3>
+                    <p>Profesionales independientes y técnicos.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Salud y Farmacia">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
+                    <h3>Salud y Farmacia</h3>
+                    <p>Droguerías y cuidado físico.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Belleza y Barbería">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg></div>
+                    <h3>Belleza y Barbería</h3>
+                    <p>Salones y cuidado personal.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Educación">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
+                    <h3>Educación</h3>
+                    <p>Academias y tutorías.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Turismo y Hoteles">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+                    <h3>Turismo y Hoteles</h3>
+                    <p>Hospedaje y guías locales.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Mascotas">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M12 11c-3.314 0-6 2.686-6 6 0 1.5.5 3 2 4h8c1.5-1 2-2.5 2-4 0-3.314-2.686-6-6-6z"></path></svg></div>
+                    <h3>Mascotas</h3>
+                    <p>Veterinarias y accesorios.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Hogar y Ferretería">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div>
+                    <h3>Hogar y Ferretería</h3>
+                    <p>Materiales, muebles y hogar.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Artesanías">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+                    <h3>Artesanías</h3>
+                    <p>Creaciones locales y recuerdos.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Deportes">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+                    <h3>Deportes</h3>
+                    <p>Artículos y espacios deportivos.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Transporte y Envíos">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
+                    <h3>Transporte y Envíos</h3>
+                    <p>Mensajería y transporte local.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Papelería y Librería">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
+                    <h3>Papelería y Librería</h3>
+                    <p>Útiles, libros y fotocopias.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Automotriz">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M5 17h14v4H5z"></path><path d="M19 13l-2-5H7L5 13"></path><circle cx="7.5" cy="13.5" r="1.5"></circle><circle cx="16.5" cy="13.5" r="1.5"></circle></svg></div>
+                    <h3>Automotriz</h3>
+                    <p>Talleres, repuestos y mecánica.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Floristería">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                    <h3>Floristería</h3>
+                    <p>Arreglos florales y detalles.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Entretenimiento">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                    <h3>Entretenimiento</h3>
+                    <p>Eventos, música y ocio.</p>
+                </div>
+                <div class="tarjeta-categoria" data-cat="Sastrería">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M6 2l6 6-6 6"></path><path d="M18 2l-6 6 6 6"></path></svg></div>
+                    <h3>Sastrería</h3>
+                    <p>Arreglos de ropa y confección.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Sobre el Directorio</h4>
+                <p>Una plataforma digital para descubrir y apoyar los emprendimientos y negocios locales en El Socorro.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a id="link-registrar">Registrar Negocio</a></li>
+                    <li><a id="link-faq">Preguntas Frecuentes</a></li>
+                    <li><a id="link-privacidad">Política de Privacidad</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Desarrollo</h4>
+                <p>Sitio web creado en 2026.</p>
+                <p>Diseñado y programado por Matías Sepúlveda Saavedra.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Directorio El Socorro. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <button id="btn-flotante">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Subir negocio
+    </button>
+
+    <div id="modal-formulario">
+        <div class="modal-contenido">
+            <button class="btn-cerrar" id="btn-cerrar-form">✖</button>
+            <h2 id="titulo-form">Sube tu emprendimiento</h2>
+            <form id="form-emprendimiento">
+                <input type="text" id="nombre" placeholder="Nombre del negocio" required>
+                <select id="categoria" required>
+                    <option value="">Selecciona una categoría</option>
+                    <option value="Comida">Comida</option>
+                    <option value="Café y Postres">Café y Postres</option>
+                    <option value="Ropa y Calzado">Ropa y Calzado</option>
+                    <option value="Tecnología">Tecnología</option>
+                    <option value="Servicios">Servicios</option>
+                    <option value="Salud y Farmacia">Salud y Farmacia</option>
+                    <option value="Belleza y Barbería">Belleza y Barbería</option>
+                    <option value="Educación">Educación</option>
+                    <option value="Turismo y Hoteles">Turismo y Hoteles</option>
+                    <option value="Mascotas">Mascotas</option>
+                    <option value="Hogar y Ferretería">Hogar y Ferretería</option>
+                    <option value="Artesanías">Artesanías</option>
+                    <option value="Deportes">Deportes</option>
+                    <option value="Transporte y Envíos">Transporte y Envíos</option>
+                    <option value="Papelería y Librería">Papelería y Librería</option>
+                    <option value="Automotriz">Automotriz</option>
+                    <option value="Floristería">Floristería</option>
+                    <option value="Entretenimiento">Entretenimiento</option>
+                    <option value="Sastrería">Sastrería</option>
+                </select>
+
+                <input type="text" id="direccion" placeholder="Dirección del negocio (opcional)">
+                <input type="tel" id="telefono" placeholder="Teléfono principal (opcional)">
+                <input type="text" id="horario" placeholder="Horario de atención (opcional)">
+                <input type="number" id="calificacion" min="0" max="5" step="0.1" placeholder="Calificación de 0 a 5 (opcional)">
+                <input type="number" id="resenas" min="0" step="1" placeholder="Número de reseñas (opcional)">
+                <input type="url" id="maps-url" placeholder="Enlace de Google Maps (opcional)">
+
+                <input type="tel" id="whatsapp" placeholder="WhatsApp (opcional)">
+                <input type="text" id="instagram" placeholder="Usuario de Instagram (opcional)">
+                <input type="text" id="facebook" placeholder="Usuario de Facebook (opcional)">
+                
+                <div id="zona-imagen">
+                    <span id="texto-imagen">Logo (Opcional). Clic o Ctrl+V aquí</span>
+                    <input type="file" id="logo-file" accept="image/*" style="display: none;">
+                    <img id="vista-previa" src="" alt="Vista previa">
+                </div>
+
+                <textarea id="descripcion" placeholder="Describe lo que haces" required></textarea>
+                <button type="submit" id="btn-submit">Publicar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-texto">
+        <div class="modal-contenido">
+            <button class="btn-cerrar" id="btn-cerrar-texto">✖</button>
+            <h2 id="titulo-texto">Título</h2>
+            <div id="contenido-texto"></div>
+        </div>
+    </div>
+
+    <script>
+        const formulario = document.getElementById('form-emprendimiento');
+        const contenedor = document.getElementById('contenedor-tarjetas');
+        const botonesFiltro = document.querySelectorAll('.filtro-btn');
+        const buscador = document.getElementById('buscador');
+        const btnTema = document.getElementById('btn-tema');
+        
+        const modalFormulario = document.getElementById('modal-formulario');
+        const modalTexto = document.getElementById('modal-texto');
+        
+        const btnFlotante = document.getElementById('btn-flotante');
+        const btnCerrarForm = document.getElementById('btn-cerrar-form');
+        const btnCerrarTexto = document.getElementById('btn-cerrar-texto');
+
+        const linkRegistrar = document.getElementById('link-registrar');
+        const linkFaq = document.getElementById('link-faq');
+        const linkPrivacidad = document.getElementById('link-privacidad');
+
+        const tituloTexto = document.getElementById('titulo-texto');
+        const contenidoTexto = document.getElementById('contenido-texto');
+
+        const zonaImagen = document.getElementById('zona-imagen');
+        const inputLogo = document.getElementById('logo-file');
+        const vistaPrevia = document.getElementById('vista-previa');
+        const textoImagen = document.getElementById('texto-imagen');
+        const inputDireccion = document.getElementById('direccion');
+        const inputTelefono = document.getElementById('telefono');
+        const inputHorario = document.getElementById('horario');
+        const inputCalificacion = document.getElementById('calificacion');
+        const inputResenas = document.getElementById('resenas');
+        const inputMapsUrl = document.getElementById('maps-url');
+        
+        const seccionGaleria = document.getElementById('galeria');
+        const seccionCategorias = document.getElementById('seccion-categorias');
+        const paginaNegocio = document.getElementById('pagina-negocio');
+        const detalleNegocio = document.getElementById('detalle-negocio');
+        const btnVolverDirectorio = document.getElementById('btn-volver-directorio');
+        const piePagina = document.querySelector('footer');
+        const navInicio = document.getElementById('nav-inicio');
+        const navCategorias = document.getElementById('nav-categorias');
+        const tarjetasCategoria = document.querySelectorAll('.tarjeta-categoria');
+
+        let logoBase64 = '';
+        let idEdicion = null;
+        
+        const CLAVE_VERSION_EMPRENDIMIENTOS = 'version_emprendimientos';
+        const VERSION_EMPRENDIMIENTOS = 'socorro-google-maps-1';
+        const nombresDemoAnterior = [
+            'El Portal del Cabrito',
+            'Café Casona',
+            'Artesanías El Telares',
+            'TecnoSocorro',
+            'Ferretería El Progreso'
+        ];
+
+        const emprendimientosIniciales = [
+            {
+                id: 1001,
+                nombre: 'Electromateriales Ardila',
+                categoria: 'Hogar y Ferretería',
+                descripcion: 'Tienda de electricidad con materiales y soluciones para hogares y negocios de Socorro.',
+                direccion: 'Cra. 14 #15-26/28, Centro, Socorro, Santander',
+                telefono: '315 2902363',
+                calificacion: null,
+                resenas: 0,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Electromateriales%20Ardila%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            },
+            {
+                id: 1002,
+                nombre: 'El Zorro',
+                categoria: 'Comida',
+                descripcion: 'Restaurante con consumo en el lugar, servicio para llevar y entrega a domicilio.',
+                direccion: 'a 11-75, Cra. 17 #111, Socorro, Santander',
+                telefono: '77275149',
+                calificacion: 4.3,
+                resenas: 247,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=El%20Zorro%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            },
+            {
+                id: 1003,
+                nombre: "Big Burguer's la 20",
+                categoria: 'Comida',
+                descripcion: 'Restaurante de comida rápida con consumo en el lugar, para llevar y entrega a domicilio.',
+                direccion: 'Cl. 20 #8-40, Socorro, Santander',
+                telefono: '312 4934400',
+                calificacion: 4.4,
+                resenas: 52,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Big%20Burguers%20la%2020%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            },
+            {
+                id: 1004,
+                nombre: 'Weider Gym',
+                categoria: 'Deportes',
+                descripcion: 'Gimnasio para entrenamiento físico y acondicionamiento en Socorro.',
+                direccion: 'Cra. 10 #12a-26, Socorro, Santander',
+                telefono: '',
+                calificacion: 4.9,
+                resenas: 22,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Weider%20Gym%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            },
+            {
+                id: 1005,
+                nombre: 'Domicilios Moto Express Socorro',
+                categoria: 'Transporte y Envíos',
+                descripcion: 'Servicio local de domicilios y mensajería en moto.',
+                direccion: 'Cra. 14 #9-43, Socorro, Santander',
+                telefono: '315 3394195',
+                calificacion: 3.9,
+                resenas: 7,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Domicilios%20Moto%20Express%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            },
+            {
+                id: 1006,
+                nombre: 'Cosmo Nails Spa',
+                categoria: 'Belleza y Barbería',
+                descripcion: 'Spa especializado en cuidado de uñas y belleza personal.',
+                direccion: 'Calle # 11 15-29, Socorro, Santander',
+                telefono: '315 4444429',
+                calificacion: 5.0,
+                resenas: 8,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Cosmo%20Nails%20Spa%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            },
+            {
+                id: 1007,
+                nombre: 'Rosée Perfumería Socorro',
+                categoria: 'Belleza y Barbería',
+                descripcion: 'Perfumería con compras en tienda, retiro en tienda y entrega a domicilio.',
+                direccion: 'Cra. 15 #11-26, Socorro, Santander',
+                telefono: '310 5797969',
+                calificacion: 5.0,
+                resenas: 7,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Rosee%20Perfumeria%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            },
+            {
+                id: 1008,
+                nombre: 'Modas y estilos Medellín.',
+                categoria: 'Ropa y Calzado',
+                descripcion: 'Tienda de ropa y moda en el centro de Socorro.',
+                direccion: 'Cl. 14 #12-20, Socorro, Santander',
+                telefono: '318 2864529',
+                calificacion: null,
+                resenas: 0,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Modas%20y%20estilos%20Medellin%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            },
+            {
+                id: 1009,
+                nombre: 'Helados Fruz Cream Socorro',
+                categoria: 'Café y Postres',
+                descripcion: 'Heladería con servicio para llevar y entrega a domicilio.',
+                direccion: 'Cra. 14 #13-19, Socorro, Santander',
+                telefono: '313 2584865',
+                calificacion: 5.0,
+                resenas: 12,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Helados%20Fruz%20Cream%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            },
+            {
+                id: 1010,
+                nombre: 'TODOELECTRICOS Sede principal',
+                categoria: 'Tecnología',
+                descripcion: 'Equipos y soluciones de energía para hogares y negocios.',
+                direccion: 'Cl. 14 #15-37, Socorro, Santander',
+                telefono: '317 5563725',
+                calificacion: 5.0,
+                resenas: 9,
+                mapsUrl: 'https://www.google.com/maps/search/?api=1&query=TODOELECTRICOS%20Sede%20principal%20Socorro%20Santander',
+                whatsapp: '',
+                instagram: '',
+                facebook: '',
+                logo: '',
+                likes: 0
+            }
+        ];
+
+        let emprendimientosGuardados = null;
+        try {
+            emprendimientosGuardados = JSON.parse(localStorage.getItem('emprendimientos') || 'null');
+        } catch (error) {
+            emprendimientosGuardados = null;
+        }
+
+        let emprendimientos;
+        if (!Array.isArray(emprendimientosGuardados) || emprendimientosGuardados.length === 0) {
+            emprendimientos = [...emprendimientosIniciales];
+        } else if (localStorage.getItem(CLAVE_VERSION_EMPRENDIMIENTOS) !== VERSION_EMPRENDIMIENTOS) {
+            const negociosPersonalizados = emprendimientosGuardados.filter(emp =>
+                !nombresDemoAnterior.includes(emp.nombre) &&
+                !emprendimientosIniciales.some(base => base.nombre === emp.nombre)
+            );
+            emprendimientos = [...emprendimientosIniciales, ...negociosPersonalizados];
+        } else {
+            emprendimientos = emprendimientosGuardados;
+        }
+
+        localStorage.setItem('emprendimientos', JSON.stringify(emprendimientos));
+        localStorage.setItem(CLAVE_VERSION_EMPRENDIMIENTOS, VERSION_EMPRENDIMIENTOS);
+
+        const temaGuardado = localStorage.getItem('tema');
+        if (temaGuardado === 'claro') {
+            document.documentElement.setAttribute('data-tema', 'claro');
+        }
+
+        btnTema.addEventListener('click', () => {
+            const temaActual = document.documentElement.getAttribute('data-tema');
+            if (temaActual === 'claro') {
+                document.documentElement.removeAttribute('data-tema');
+                localStorage.setItem('tema', 'oscuro');
+            } else {
+                document.documentElement.setAttribute('data-tema', 'claro');
+                localStorage.setItem('tema', 'claro');
+            }
+        });
+
+        navInicio.addEventListener('click', () => {
+            cerrarPaginaNegocio();
+        });
+
+        navCategorias.addEventListener('click', () => {
+            cerrarPaginaNegocio();
+            seccionGaleria.style.display = 'none';
+            seccionCategorias.style.display = 'block';
+            navInicio.classList.remove('activo');
+            navCategorias.classList.add('activo');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        tarjetasCategoria.forEach(tarjeta => {
+            tarjeta.addEventListener('click', function() {
+                const categoria = this.getAttribute('data-cat');
+                const botonFiltro = document.querySelector(`.filtro-btn[data-categoria="${categoria}"]`);
+                
+                if (botonFiltro) {
+                    botonFiltro.click();
+                    botonFiltro.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+                navInicio.click();
+            });
+        });
+
+        function abrirModalFormulario() {
+            modalFormulario.classList.add('activo');
+        }
+
+        function limpiarFormulario() {
+            formulario.reset();
+            idEdicion = null;
+            logoBase64 = '';
+            vistaPrevia.style.display = 'none';
+            textoImagen.style.display = 'block';
+            document.getElementById('btn-submit').textContent = 'Publicar';
+            document.getElementById('titulo-form').textContent = 'Sube tu emprendimiento';
+        }
+
+        function cerrarModalFormulario() {
+            modalFormulario.classList.remove('activo');
+            setTimeout(limpiarFormulario, 300);
+        }
+
+        function cerrarModalTexto() {
+            modalTexto.classList.remove('activo');
+        }
+
+        btnFlotante.addEventListener('click', abrirModalFormulario);
+        linkRegistrar.addEventListener('click', () => {
+            cerrarPaginaNegocio();
+            abrirModalFormulario();
+        });
+        btnVolverDirectorio.addEventListener('click', cerrarPaginaNegocio);
+        
+        btnCerrarForm.addEventListener('click', cerrarModalFormulario);
+        btnCerrarTexto.addEventListener('click', cerrarModalTexto);
+        
+        modalFormulario.addEventListener('click', (e) => {
+            if (e.target === modalFormulario) cerrarModalFormulario();
+        });
+        
+        modalTexto.addEventListener('click', (e) => {
+            if (e.target === modalTexto) cerrarModalTexto();
+        });
+
+        const contenidoFaq = `
+            <div class="info-bloque">
+                <h3>¿Tiene costo registrar mi emprendimiento?</h3>
+                <p>No, subir tu negocio al Directorio de El Socorro es totalmente gratis y de libre acceso para la comunidad.</p>
+            </div>
+            <div class="info-bloque">
+                <h3>¿Cómo edito la información de mi negocio?</h3>
+                <p>En la tarjeta de tu negocio verás un botón que dice "Editar". Al presionarlo, puedes actualizar tus redes, descripción o logo.</p>
+            </div>
+            <div class="info-bloque">
+                <h3>¿Quiénes pueden publicar en esta página?</h3>
+                <p>Cualquier persona que tenga un emprendimiento, tienda física, ofrezca servicios o venda productos dentro del municipio de El Socorro.</p>
+            </div>
+        `;
+
+        const contenidoPrivacidad = `
+            <div class="info-bloque">
+                <h3>Información Pública</h3>
+                <p>Los datos que ingresas en el formulario están diseñados para ser visibles al público con el fin de que puedan contactar tu negocio.</p>
+            </div>
+            <div class="info-bloque">
+                <h3>Almacenamiento de Datos</h3>
+                <p>La información no se vende ni se comparte con terceros. Los registros se almacenan directamente en el sistema local.</p>
+            </div>
+        `;
+
+        linkFaq.addEventListener('click', () => {
+            tituloTexto.textContent = 'Preguntas Frecuentes';
+            contenidoTexto.innerHTML = contenidoFaq;
+            modalTexto.classList.add('activo');
+        });
+
+        linkPrivacidad.addEventListener('click', () => {
+            tituloTexto.textContent = 'Política de Privacidad';
+            contenidoTexto.innerHTML = contenidoPrivacidad;
+            modalTexto.classList.add('activo');
+        });
+
+        zonaImagen.addEventListener('click', () => inputLogo.click());
+
+        inputLogo.addEventListener('change', function(e) {
+            if (e.target.files[0]) procesarArchivoImagen(e.target.files[0]);
+        });
+
+        document.addEventListener('paste', function(e) {
+            if (!modalFormulario.classList.contains('activo')) return;
+            
+            const items = e.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    procesarArchivoImagen(items[i].getAsFile());
+                    e.preventDefault();
+                    break;
+                }
+            }
+        });
+
+        function procesarArchivoImagen(archivo) {
+            const reader = new FileReader();
+            reader.onload = function(evento) {
+                logoBase64 = evento.target.result;
+                vistaPrevia.src = logoBase64;
+                vistaPrevia.style.display = 'block';
+                textoImagen.style.display = 'none';
+            };
+            reader.readAsDataURL(archivo);
+        }
+
+        function escaparHtml(valor = '') {
+            return String(valor).replace(/[&<>"']/g, caracter => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[caracter]));
+        }
+
+        function obtenerUrlSegura(url = '') {
+            return /^https?:\/\//i.test(url) ? escaparHtml(url) : '';
+        }
+
+        function mostrarPaginaNegocio(id) {
+            const emp = emprendimientos.find(e => e.id === id);
+            if (!emp) return;
+
+            const nombre = escaparHtml(emp.nombre);
+            const categoria = escaparHtml(emp.categoria);
+            const descripcion = escaparHtml(emp.descripcion || 'Sin descripción disponible.');
+            const direccion = escaparHtml(emp.direccion || 'Información no registrada');
+            const horario = escaparHtml(emp.horario || 'Horario no registrado');
+            const telefonoSeguro = emp.telefono ? emp.telefono.replace(/[^\d+]/g, '') : '';
+            const telefono = escaparHtml(emp.telefono || 'Teléfono no registrado');
+            const mapsUrl = obtenerUrlSegura(emp.mapsUrl);
+            const whatsapp = emp.whatsapp ? emp.whatsapp.replace(/[^\d]/g, '') : '';
+            const instagram = emp.instagram ? emp.instagram.replace(/^@/, '').replace(/[^\w.]/g, '') : '';
+            const facebook = emp.facebook ? emp.facebook.replace(/[^\w.]/g, '') : '';
+            const logoValido = emp.logo && /^data:image\//i.test(emp.logo);
+            const calificacion = typeof emp.calificacion === 'number' && Number.isFinite(emp.calificacion)
+                ? `${emp.calificacion.toFixed(1)} / 5${emp.resenas ? ` (${emp.resenas} reseñas)` : ''}`
+                : 'No registrada';
+            const logoHtml = logoValido ? `<img src="${escaparHtml(emp.logo)}" alt="Logo de ${nombre}">` : '';
+            const telefonoHtml = telefonoSeguro ? `<a href="tel:${telefonoSeguro}">${telefono}</a>` : `<span>${telefono}</span>`;
+            const mapsHtml = mapsUrl ? `<a class="btn-accion-pagina" href="${mapsUrl}" target="_blank" rel="noopener noreferrer">Ver en Google Maps</a>` : '';
+            const whatsappHtml = whatsapp ? `<a class="btn-accion-pagina" href="https://wa.me/${whatsapp}" target="_blank" rel="noopener noreferrer">WhatsApp</a>` : '';
+            const instagramHtml = instagram ? `<a class="btn-accion-pagina secundario" href="https://instagram.com/${instagram}" target="_blank" rel="noopener noreferrer">Instagram</a>` : '';
+            const facebookHtml = facebook ? `<a class="btn-accion-pagina secundario" href="https://facebook.com/${facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>` : '';
+            const redesHtml = `${whatsappHtml}${instagramHtml}${facebookHtml}`;
+
+            detalleNegocio.innerHTML = `
+                <div class="pagina-negocio-contenido">
+                    <div class="pagina-negocio-portada">
+                        ${logoHtml}
+                        <div class="pagina-negocio-portada-texto">
+                            <span class="cat">${categoria}</span>
+                            <h1>${nombre}</h1>
+                        </div>
+                    </div>
+                    <div class="pagina-negocio-cuerpo">
+                        <h2>Sobre este negocio</h2>
+                        <p class="pagina-negocio-descripcion">${descripcion}</p>
+                        <div class="detalles-pagina-negocio">
+                            <div class="detalle-pagina-item"><strong>Calificación</strong><span>${escaparHtml(calificacion)}</span></div>
+                            <div class="detalle-pagina-item"><strong>Dirección</strong><span>${direccion}</span></div>
+                            <div class="detalle-pagina-item"><strong>Teléfono</strong>${telefonoHtml}</div>
+                            <div class="detalle-pagina-item"><strong>Horario</strong><span>${horario}</span></div>
+                        </div>
+                        <div class="acciones-pagina-negocio">
+                            ${mapsHtml}
+                            ${redesHtml}
+                            ${telefonoSeguro ? `<a class="btn-accion-pagina secundario" href="tel:${telefonoSeguro}">Llamar</a>` : ''}
+                            <button class="btn-accion-pagina secundario" type="button" onclick="editarDesdePagina(${emp.id})">Editar negocio</button>
+                            <button class="btn-accion-pagina peligro" type="button" onclick="borrar(${emp.id})">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            seccionGaleria.style.display = 'none';
+            seccionCategorias.style.display = 'none';
+            paginaNegocio.classList.add('activa');
+            paginaNegocio.setAttribute('aria-hidden', 'false');
+            piePagina.style.display = 'none';
+            btnFlotante.style.display = 'none';
+            navInicio.classList.remove('activo');
+            navCategorias.classList.remove('activo');
+            document.title = `${emp.nombre} · Directorio El Socorro`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cerrarPaginaNegocio() {
+            paginaNegocio.classList.remove('activa');
+            paginaNegocio.setAttribute('aria-hidden', 'true');
+            detalleNegocio.innerHTML = '';
+            seccionGaleria.style.display = 'block';
+            seccionCategorias.style.display = 'none';
+            piePagina.style.display = '';
+            btnFlotante.style.display = '';
+            navCategorias.classList.remove('activo');
+            navInicio.classList.add('activo');
+            document.title = 'Directorio El Socorro';
+            const filtroActivo = document.querySelector('.filtro-btn.activo').getAttribute('data-categoria');
+            mostrarEmprendimientos(filtroActivo, buscador.value);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function editarDesdePagina(id) {
+            cerrarPaginaNegocio();
+            editar(id);
+        }
+
+        function mostrarEmprendimientos(filtro = 'Todos', textoBusqueda = '') {
+            contenedor.innerHTML = ''; 
+            
+            let datos = filtro === 'Todos' ? emprendimientos : emprendimientos.filter(emp => emp.categoria === filtro);
+            
+            if (textoBusqueda) {
+                const textoLower = textoBusqueda.toLowerCase();
+                datos = datos.filter(emp => 
+                    emp.nombre.toLowerCase().includes(textoLower) || 
+                    emp.descripcion.toLowerCase().includes(textoLower)
+                );
+            }
+            
+            datos.forEach((emp, index) => {
+                const tarjeta = document.createElement('div');
+                tarjeta.classList.add('tarjeta');
+                tarjeta.style.animationDelay = `${index * 0.05}s`;
+                
+                const imagenHtml = emp.logo ? `<img src="${emp.logo}" class="logo-tarjeta" style="display:block" alt="Logo">` : '';
+                const waHtml = emp.whatsapp ? `<a href="https://wa.me/${emp.whatsapp}" target="_blank" rel="noopener noreferrer">WhatsApp</a>` : '';
+                const igHtml = emp.instagram ? `<a href="https://instagram.com/${emp.instagram.replace('@', '')}" target="_blank" rel="noopener noreferrer">Instagram</a>` : '';
+                const fbHtml = emp.facebook ? `<a href="https://facebook.com/${emp.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>` : '';
+                const telefonoSeguro = emp.telefono ? emp.telefono.replace(/[^\d+]/g, '') : '';
+                const calificacionHtml = typeof emp.calificacion === 'number' && Number.isFinite(emp.calificacion) && emp.resenas
+                    ? `<span class="detalle-calificacion">Calificación: ${emp.calificacion.toFixed(1)} (${emp.resenas} reseñas)</span>`
+                    : '';
+                const direccionHtml = emp.direccion ? `<span>Dirección: ${emp.direccion}</span>` : '';
+                const telefonoHtml = emp.telefono && telefonoSeguro
+                    ? `<a href="tel:${telefonoSeguro}">Teléfono: ${emp.telefono}</a>`
+                    : '';
+                const horarioHtml = emp.horario ? `<span>Horario: ${emp.horario}</span>` : '';
+                const mapsHtml = emp.mapsUrl && /^https?:\/\//i.test(emp.mapsUrl)
+                    ? `<a href="${emp.mapsUrl}" target="_blank" rel="noopener noreferrer">Ver en Google Maps</a>`
+                    : '';
+                
+                const likes = emp.likes || 0;
+
+                tarjeta.innerHTML = `
+                    ${imagenHtml}
+                    <div class="contenido-tarjeta">
+                        <div class="tarjeta-header">
+                            <h3>${emp.nombre}</h3>
+                            <button class="btn-like" onclick="darLike(${emp.id})">❤️ ${likes}</button>
+                        </div>
+                        <span class="cat">${emp.categoria}</span>
+                        <p>${emp.descripcion}</p>
+
+                        <div class="detalles-negocio">
+                            ${calificacionHtml}
+                            ${direccionHtml}
+                            ${telefonoHtml}
+                            ${horarioHtml}
+                            ${mapsHtml}
+                        </div>
+                        
+                        <div class="redes">
+                            ${waHtml}
+                            ${igHtml}
+                            ${fbHtml}
+                        </div>
+
+                        <div class="acciones">
+                            <button class="btn-editar" onclick="editar(${emp.id})">Editar</button>
+                            <button class="btn-eliminar" onclick="borrar(${emp.id})">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+                
+                tarjeta.tabIndex = 0;
+                tarjeta.setAttribute('role', 'button');
+                tarjeta.setAttribute('aria-label', `Ver detalles de ${emp.nombre}`);
+                tarjeta.addEventListener('click', function(evento) {
+                    if (evento.target.closest('button, a')) return;
+                    mostrarPaginaNegocio(emp.id);
+                });
+                tarjeta.addEventListener('keydown', function(evento) {
+                    if ((evento.key === 'Enter' || evento.key === ' ') && !evento.target.closest('button, a')) {
+                        evento.preventDefault();
+                        mostrarPaginaNegocio(emp.id);
+                    }
+                });
+                tarjeta.tabIndex = 0;
+                tarjeta.setAttribute('role', 'button');
+                tarjeta.setAttribute('aria-label', `Ver detalles de ${emp.nombre}`);
+                tarjeta.addEventListener('click', function(evento) {
+                    if (evento.target.closest('button, a')) return;
+                    mostrarPaginaNegocio(emp.id);
+                });
+                tarjeta.addEventListener('keydown', function(evento) {
+                    if ((evento.key === 'Enter' || evento.key === ' ') && !evento.target.closest('button, a')) {
+                        evento.preventDefault();
+                        mostrarPaginaNegocio(emp.id);
+                    }
+                });
+                contenedor.appendChild(tarjeta);
+            });
+        }
+
+        function borrar(id) {
+            const paginaActiva = paginaNegocio.classList.contains('activa');
+            emprendimientos = emprendimientos.filter(emp => emp.id !== id);
+            guardarYActualizar();
+            if (paginaActiva) cerrarPaginaNegocio();
+        }
+
+        function darLike(id) {
+            const index = emprendimientos.findIndex(e => e.id === id);
+            if (index !== -1) {
+                emprendimientos[index].likes = (emprendimientos[index].likes || 0) + 1;
+                guardarYActualizar();
+            }
+        }
+
+        function editar(id) {
+            const emp = emprendimientos.find(e => e.id === id);
+            if (!emp) return;
+
+            document.getElementById('nombre').value = emp.nombre;
+            document.getElementById('categoria').value = emp.categoria;
+            inputDireccion.value = emp.direccion || '';
+            inputTelefono.value = emp.telefono || '';
+            inputHorario.value = emp.horario || '';
+            inputCalificacion.value = typeof emp.calificacion === 'number' ? emp.calificacion : '';
+            inputResenas.value = Number.isFinite(emp.resenas) && emp.resenas > 0 ? emp.resenas : '';
+            inputMapsUrl.value = emp.mapsUrl || '';
+            document.getElementById('whatsapp').value = emp.whatsapp || '';
+            document.getElementById('instagram').value = emp.instagram || '';
+            document.getElementById('facebook').value = emp.facebook || '';
+            document.getElementById('descripcion').value = emp.descripcion;
+            
+            logoBase64 = emp.logo || '';
+            if (logoBase64) {
+                vistaPrevia.src = logoBase64;
+                vistaPrevia.style.display = 'block';
+                textoImagen.style.display = 'none';
+            } else {
+                vistaPrevia.src = '';
+                vistaPrevia.style.display = 'none';
+                textoImagen.style.display = 'block';
+            }
+
+            idEdicion = id;
+            document.getElementById('btn-submit').textContent = 'Actualizar Emprendimiento';
+            document.getElementById('titulo-form').textContent = 'Editar emprendimiento';
+            abrirModalFormulario();
+        }
+
+        function guardarYActualizar() {
+            localStorage.setItem('emprendimientos', JSON.stringify(emprendimientos));
+            const filtroActivo = document.querySelector('.filtro-btn.activo').getAttribute('data-categoria');
+            mostrarEmprendimientos(filtroActivo, buscador.value);
+        }
+
+        formulario.addEventListener('submit', function(evento) {
+            evento.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value.trim();
+            const categoria = document.getElementById('categoria').value;
+            const direccion = inputDireccion.value.trim();
+            const telefono = inputTelefono.value.trim();
+            const horario = inputHorario.value.trim();
+            const calificacionEntrada = inputCalificacion.value.trim();
+            const resenasEntrada = inputResenas.value.trim();
+            const mapsUrl = inputMapsUrl.value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const instagram = document.getElementById('instagram').value.trim();
+            const facebook = document.getElementById('facebook').value.trim();
+            const descripcion = document.getElementById('descripcion').value.trim();
+            const calificacionNumero = calificacionEntrada === '' ? null : Number.parseFloat(calificacionEntrada);
+            const calificacion = Number.isFinite(calificacionNumero)
+                ? Math.min(5, Math.max(0, calificacionNumero))
+                : null;
+            const resenasNumero = resenasEntrada === '' ? 0 : Number.parseInt(resenasEntrada, 10);
+            const resenas = Number.isFinite(resenasNumero) ? Math.max(0, resenasNumero) : 0;
+            
+            if (idEdicion) {
+                const index = emprendimientos.findIndex(e => e.id === idEdicion);
+                emprendimientos[index] = { 
+                    ...emprendimientos[index],
+                    nombre, categoria, direccion, telefono, horario, calificacion, resenas, mapsUrl,
+                    whatsapp, instagram, facebook, descripcion, logo: logoBase64
+                };
+            } else {
+                emprendimientos.push({ 
+                    id: Date.now(),
+                    nombre, logo: logoBase64, categoria, direccion, telefono, horario, calificacion, resenas, mapsUrl,
+                    whatsapp, instagram, facebook, descripcion, likes: 0
+                });
+            }
+            
+            guardarYActualizar();
+            cerrarModalFormulario();
+        });
+
+        botonesFiltro.forEach(boton => {
+            boton.addEventListener('click', function() {
+                botonesFiltro.forEach(b => b.classList.remove('activo'));
+                this.classList.add('activo');
+                this.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                mostrarEmprendimientos(this.getAttribute('data-categoria'), buscador.value);
+            });
+        })
+
+        buscador.addEventListener('input', () => {
+            const filtroActivo = document.querySelector('.filtro-btn.activo').getAttribute('data-categoria');
+            mostrarEmprendimientos(filtroActivo, buscador.value);
+        });
+
+        mostrarEmprendimientos();
+    </script>
+</body>
+</html>
