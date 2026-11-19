@@ -3,31 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Directorio El Socorro</title>
+    <title>Emprende Socorro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #09090b;
-            --bg-card: #18181b;
-            --text-main: #f8fafc;
-            --text-muted: #a1a1aa;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --danger: #ef4444;
-            --border: #27272a;
-            --btn-text: #ffffff;
+            /* Tema oscuro: tyrian purple de fondo, vanilla y powder blue de contraste */
+            --bg-main: #15090f;
+            --bg-card: #24101c;
+            --text-main: #f6eacb;
+            --text-muted: #c2a0a0;
+            --accent: #b0e0e6;
+            --accent-rgb: 176, 224, 230;
+            --accent-hover: #cfedf2;
+            --btn-text: #1b0a12;
+            --highlight: #d3d65e;
+            --highlight-contrast: #1b0a12;
+            --danger: #c2546a;
+            --danger-rgb: 194, 84, 106;
+            --border: #3e2030;
+            --header-bg: rgba(21, 9, 15, 0.78);
+            --overlay: rgba(21, 9, 15, 0.78);
+            --portada-tint: rgba(102, 2, 60, 0.65);
+            --portada-fade: rgba(21, 9, 15, 0.9);
             --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
             --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
         }
 
         [data-tema="claro"] {
-            --bg-main: #f8fafc;
-            --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --border: #e2e8f0;
+            /* Tema claro: vanilla de fondo, tyrian purple y vintage wine como acentos */
+            --bg-main: #f7f0dc;
+            --bg-card: #fdf9ec;
+            --text-main: #33121f;
+            --text-muted: #7c5b5b;
+            --accent: #66023c;
+            --accent-rgb: 102, 2, 60;
+            --accent-hover: #4a0129;
+            --btn-text: #f7f0dc;
+            --highlight: #6f6a10;
+            --highlight-contrast: #f7f0dc;
+            --danger: #722f37;
+            --danger-rgb: 114, 47, 55;
+            --border: #e4d8c2;
+            --header-bg: rgba(247, 240, 220, 0.85);
+            --overlay: rgba(51, 18, 31, 0.55);
+            --portada-tint: rgba(102, 2, 60, 0.55);
+            --portada-fade: rgba(51, 18, 31, 0.85);
             --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
@@ -36,6 +56,31 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .saltar-contenido {
+            position: absolute;
+            left: 1rem;
+            top: -100px;
+            z-index: 3000;
+            background: var(--accent);
+            color: var(--btn-text);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+
+        .saltar-contenido:focus {
+            top: 1rem;
         }
 
         body {
@@ -53,15 +98,11 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            background-color: rgba(9, 9, 11, 0.75);
+            background-color: var(--header-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             transition: background-color 0.4s ease, border-color 0.4s ease;
-        }
-
-        [data-tema="claro"] header {
-            background-color: rgba(248, 250, 252, 0.85);
         }
 
         .header-content {
@@ -169,6 +210,67 @@
             padding: 3rem 1.5rem;
         }
 
+        #hero {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            padding: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.18), transparent 60%), var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        #hero::after {
+            content: '';
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            top: -120px;
+            right: -80px;
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.22), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-contenido {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-etiqueta {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(var(--accent-rgb), 0.12);
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        #hero h1 {
+            max-width: 18ch;
+            margin-bottom: 0.75rem;
+            font-size: clamp(1.9rem, 4.5vw, 3rem);
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+        }
+
+        #hero p {
+            max-width: 55ch;
+            margin-bottom: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .hero-stats {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
         h2 {
             font-size: 1.5rem;
             margin-bottom: 1.5rem;
@@ -212,7 +314,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(var(--accent-rgb), 0.12);
             border-radius: 12px;
             color: var(--accent);
         }
@@ -305,7 +407,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: var(--overlay);
             backdrop-filter: blur(4px);
             z-index: 1000;
             display: flex;
@@ -411,7 +513,7 @@
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.25);
         }
 
         textarea {
@@ -437,7 +539,7 @@
 
         #zona-imagen:hover {
             border-color: var(--accent);
-            background-color: rgba(59, 130, 246, 0.05);
+            background-color: rgba(var(--accent-rgb), 0.08);
         }
 
         #vista-previa {
@@ -515,14 +617,83 @@
             }
         }
 
-        #buscador {
+        #buscador-contenedor {
+            position: relative;
             width: 100%;
             max-width: 280px;
             flex-shrink: 0;
         }
 
+        #buscador {
+            width: 100%;
+        }
+
+        #sugerencias {
+            position: absolute;
+            top: calc(100% + 0.4rem);
+            left: 0;
+            right: 0;
+            z-index: 60;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0.4rem;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow-hover);
+        }
+
+        #sugerencias[hidden] {
+            display: none;
+        }
+
+        .sugerencia-titulo {
+            padding: 0.45rem 0.6rem 0.25rem;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .sugerencia-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.1rem;
+            width: 100%;
+            padding: 0.55rem 0.6rem;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.9rem;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+
+        .sugerencia-item:hover,
+        .sugerencia-item:focus-visible {
+            background-color: rgba(var(--accent-rgb), 0.1);
+        }
+
+        .sugerencia-meta {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
         /* Carrusel de filtros */
-        #filtros {
+        #filtros-contenedor {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .fila-filtros {
             display: flex;
             gap: 0.5rem;
             overflow-x: auto;
@@ -534,15 +705,19 @@
             width: 100%;
         }
 
-        #filtros::-webkit-scrollbar {
+        .fila-filtros[hidden] {
+            display: none;
+        }
+
+        .fila-filtros::-webkit-scrollbar {
             height: 6px;
         }
 
-        #filtros::-webkit-scrollbar-track {
+        .fila-filtros::-webkit-scrollbar-track {
             background: transparent;
         }
 
-        #filtros::-webkit-scrollbar-thumb {
+        .fila-filtros::-webkit-scrollbar-thumb {
             background-color: var(--border);
             border-radius: 4px;
         }
@@ -566,15 +741,144 @@
         }
 
         .filtro-btn.activo {
-            background-color: var(--text-main);
-            border-color: var(--text-main);
-            color: var(--bg-main);
+            background-color: var(--highlight);
+            border-color: var(--highlight);
+            color: var(--highlight-contrast);
+        }
+
+        .filtro-btn.contexto {
+            border-color: var(--highlight);
+            color: var(--highlight);
+        }
+
+        .filtro-btn.grupo {
+            font-weight: 600;
+        }
+
+        .filtro-btn.sub {
+            padding: 0.35rem 1rem;
+            font-size: 0.82rem;
+        }
+
+        .subcategorias-cat {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: 1rem;
+        }
+
+        .subcat-chip {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .subcat-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background-color: rgba(var(--accent-rgb), 0.08);
         }
 
         #contenedor-tarjetas {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
+        }
+
+        .tarjeta-esqueleto {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            padding: 1.5rem;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .esqueleto {
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--border) 25%, rgba(var(--accent-rgb), 0.12) 50%, var(--border) 75%);
+            background-size: 200% 100%;
+            animation: brillo 1.2s ease-in-out infinite;
+        }
+
+        .esqueleto-titulo {
+            width: 65%;
+            height: 20px;
+        }
+
+        .esqueleto-chip {
+            width: 110px;
+            height: 22px;
+            border-radius: 999px;
+        }
+
+        .esqueleto-linea {
+            height: 12px;
+        }
+
+        .esqueleto-linea.corta {
+            width: 70%;
+        }
+
+        @keyframes brillo {
+            from { background-position: 200% 0; }
+            to { background-position: -200% 0; }
+        }
+
+        .estado-vacio {
+            grid-column: 1 / -1;
+            padding: 4rem 1.5rem;
+            border: 1px dashed var(--border);
+            border-radius: 16px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .estado-vacio svg {
+            width: 44px;
+            height: 44px;
+            margin-bottom: 1rem;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .estado-vacio h3 {
+            margin-bottom: 0.4rem;
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        .estado-vacio p {
+            margin-bottom: 1.25rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-limpiar-filtros {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--accent);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-limpiar-filtros:hover {
+            background-color: rgba(var(--accent-rgb), 0.12);
         }
 
         @keyframes subir {
@@ -591,8 +895,21 @@
             flex-direction: column;
             box-shadow: var(--shadow-card);
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            animation: subir 0.5s ease-out forwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.45s ease;
+        }
+
+        .tarjeta.revelar {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .tarjeta.revelar.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .tarjeta.revelar.visible:hover {
+            transform: translateY(-6px);
         }
 
         .tarjeta:hover {
@@ -632,7 +949,7 @@
             display: flex;
             align-items: flex-end;
             padding: 2.5rem;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(15, 23, 42, 0.9));
+            background: linear-gradient(135deg, var(--portada-tint), var(--portada-fade));
         }
 
         .pagina-negocio-portada img {
@@ -648,7 +965,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.05), rgba(15, 23, 42, 0.9));
+            background: linear-gradient(180deg, transparent, var(--portada-fade));
         }
 
         .pagina-negocio-portada-texto {
@@ -659,13 +976,13 @@
         .pagina-negocio-portada h1 {
             font-size: clamp(2rem, 5vw, 3.5rem);
             margin: 0.75rem 0 0;
-            color: #fff;
+            color: #f7f0dc;
         }
 
         .pagina-negocio-portada .cat {
             display: inline-block;
-            background: rgba(59, 130, 246, 0.9);
-            color: #fff;
+            background: rgba(var(--accent-rgb), 0.92);
+            color: var(--btn-text);
             padding: 0.4rem 0.9rem;
             border-radius: 999px;
             font-size: 0.85rem;
@@ -758,7 +1075,7 @@
         .btn-accion-pagina {
             background: var(--accent);
             border: 1px solid var(--accent);
-            color: #fff;
+            color: var(--btn-text);
         }
 
         .btn-accion-pagina:hover {
@@ -820,7 +1137,7 @@
         }
 
         .btn-like {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(var(--danger-rgb), 0.12);
             border: none;
             color: var(--danger);
             padding: 0.4rem 0.8rem;
@@ -833,11 +1150,11 @@
         }
 
         .btn-like:hover {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(var(--danger-rgb), 0.22);
         }
 
         .tarjeta span.cat {
-            background-color: rgba(59, 130, 246, 0.1);
+            background-color: rgba(var(--accent-rgb), 0.12);
             color: var(--accent);
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
@@ -873,8 +1190,34 @@
         }
 
         .detalle-calificacion {
-            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--highlight);
             font-weight: 600;
+        }
+
+        .estrellas {
+            position: relative;
+            display: inline-block;
+            font-size: 0.95rem;
+            line-height: 1;
+            letter-spacing: 1px;
+            color: var(--border);
+            white-space: nowrap;
+        }
+
+        .estrellas-relleno {
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            color: var(--highlight);
+            white-space: nowrap;
+        }
+
+        .detalle-pagina-item .estrellas {
+            margin-right: 0.35rem;
         }
 
         .redes {
@@ -897,7 +1240,7 @@
         .redes a:hover {
             border-color: var(--text-main);
             color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(var(--accent-rgb), 0.1);
         }
 
         .acciones {
@@ -916,19 +1259,80 @@
         }
 
         .btn-editar { border: 1px solid var(--accent); color: var(--accent); }
-        .btn-editar:hover { background: rgba(59, 130, 246, 0.1); }
+        .btn-editar:hover { background: rgba(var(--accent-rgb), 0.12); }
         
         .btn-eliminar { border: 1px solid var(--danger); color: var(--danger); }
-        .btn-eliminar:hover { background: rgba(239, 68, 68, 0.1); }
+        .btn-eliminar:hover { background: rgba(var(--danger-rgb), 0.12); }
+
+        #toast-contenedor {
+            position: fixed;
+            top: 5.2rem;
+            left: 50%;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: min(92vw, 420px);
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .toast {
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 10px;
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            box-shadow: var(--shadow-hover);
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .toast.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .toast.exito {
+            border-left-color: var(--highlight);
+        }
+
+        .toast.peligro {
+            border-left-color: var(--danger);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            html {
+                scroll-behavior: auto;
+            }
+
+            .tarjeta.revelar {
+                opacity: 1;
+                transform: none;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
 
     <header>
         <div class="header-content">
             <div class="logo">
                 <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                Directorio El Socorro
+                Emprende Socorro
             </div>
             <nav>
                 <a id="nav-inicio" class="nav-link activo">Inicio</a>
@@ -953,31 +1357,25 @@
         </div>
     </header>
 
-    <main>
+    <main id="contenido">
         <section id="galeria">
+            <section id="hero">
+                <div class="hero-contenido">
+                    <span class="hero-etiqueta">Directorio local</span>
+                    <h1>Descubre y apoya los negocios de El Socorro</h1>
+                    <p>Encuentra restaurantes, tiendas y servicios cerca de ti, con contacto directo y sin intermediarios.</p>
+                    <div class="hero-stats" id="hero-stats"></div>
+                </div>
+            </section>
+
             <div class="controles-galeria">
-                <input type="text" id="buscador" placeholder="Buscar negocio...">
-                <div id="filtros">
-                    <button class="filtro-btn activo" data-categoria="Todos">Todos</button>
-                    <button class="filtro-btn" data-categoria="Comida">Comida</button>
-                    <button class="filtro-btn" data-categoria="Café y Postres">Café y Postres</button>
-                    <button class="filtro-btn" data-categoria="Ropa y Calzado">Ropa y Calzado</button>
-                    <button class="filtro-btn" data-categoria="Tecnología">Tecnología</button>
-                    <button class="filtro-btn" data-categoria="Servicios">Servicios</button>
-                    <button class="filtro-btn" data-categoria="Salud y Farmacia">Salud y Farmacia</button>
-                    <button class="filtro-btn" data-categoria="Belleza y Barbería">Belleza y Barbería</button>
-                    <button class="filtro-btn" data-categoria="Educación">Educación</button>
-                    <button class="filtro-btn" data-categoria="Turismo y Hoteles">Turismo y Hoteles</button>
-                    <button class="filtro-btn" data-categoria="Mascotas">Mascotas</button>
-                    <button class="filtro-btn" data-categoria="Hogar y Ferretería">Hogar y Ferretería</button>
-                    <button class="filtro-btn" data-categoria="Artesanías">Artesanías</button>
-                    <button class="filtro-btn" data-categoria="Deportes">Deportes</button>
-                    <button class="filtro-btn" data-categoria="Transporte y Envíos">Transporte y Envíos</button>
-                    <button class="filtro-btn" data-categoria="Papelería y Librería">Papelería y Librería</button>
-                    <button class="filtro-btn" data-categoria="Automotriz">Automotriz</button>
-                    <button class="filtro-btn" data-categoria="Floristería">Floristería</button>
-                    <button class="filtro-btn" data-categoria="Entretenimiento">Entretenimiento</button>
-                    <button class="filtro-btn" data-categoria="Sastrería">Sastrería</button>
+                <div id="buscador-contenedor">
+                    <input type="text" id="buscador" placeholder="Buscar negocio..." autocomplete="off" aria-autocomplete="list" aria-expanded="false">
+                    <div id="sugerencias" hidden></div>
+                </div>
+                <div id="filtros-contenedor">
+                    <div id="filtros" class="fila-filtros"></div>
+                    <div id="filtros-sub" class="fila-filtros" hidden></div>
                 </div>
             </div>
 
@@ -993,110 +1391,14 @@
             <h2>Explora por Categorías</h2>
             <p style="color: var(--text-muted); margin-bottom: 2rem;">Encuentra lo que buscas organizando los emprendimientos de El Socorro por su sector.</p>
             
-            <div class="grid-categorias">
-                <div class="tarjeta-categoria" data-cat="Comida">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg></div>
-                    <h3>Comida</h3>
-                    <p>Restaurantes y almuerzos típicos.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Café y Postres">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="14" y2="1"></line></svg></div>
-                    <h3>Café y Postres</h3>
-                    <p>Cafeterías y repostería artesanal.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Ropa y Calzado">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H5v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10h1.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg></div>
-                    <h3>Ropa y Calzado</h3>
-                    <p>Moda y tiendas de ropa.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Tecnología">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
-                    <h3>Tecnología</h3>
-                    <p>Equipos, repuestos y soporte técnico.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Servicios">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div>
-                    <h3>Servicios</h3>
-                    <p>Profesionales independientes y técnicos.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Salud y Farmacia">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
-                    <h3>Salud y Farmacia</h3>
-                    <p>Droguerías y cuidado físico.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Belleza y Barbería">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg></div>
-                    <h3>Belleza y Barbería</h3>
-                    <p>Salones y cuidado personal.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Educación">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
-                    <h3>Educación</h3>
-                    <p>Academias y tutorías.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Turismo y Hoteles">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
-                    <h3>Turismo y Hoteles</h3>
-                    <p>Hospedaje y guías locales.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Mascotas">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M12 11c-3.314 0-6 2.686-6 6 0 1.5.5 3 2 4h8c1.5-1 2-2.5 2-4 0-3.314-2.686-6-6-6z"></path></svg></div>
-                    <h3>Mascotas</h3>
-                    <p>Veterinarias y accesorios.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Hogar y Ferretería">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div>
-                    <h3>Hogar y Ferretería</h3>
-                    <p>Materiales, muebles y hogar.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Artesanías">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
-                    <h3>Artesanías</h3>
-                    <p>Creaciones locales y recuerdos.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Deportes">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
-                    <h3>Deportes</h3>
-                    <p>Artículos y espacios deportivos.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Transporte y Envíos">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg></div>
-                    <h3>Transporte y Envíos</h3>
-                    <p>Mensajería y transporte local.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Papelería y Librería">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
-                    <h3>Papelería y Librería</h3>
-                    <p>Útiles, libros y fotocopias.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Automotriz">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M5 17h14v4H5z"></path><path d="M19 13l-2-5H7L5 13"></path><circle cx="7.5" cy="13.5" r="1.5"></circle><circle cx="16.5" cy="13.5" r="1.5"></circle></svg></div>
-                    <h3>Automotriz</h3>
-                    <p>Talleres, repuestos y mecánica.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Floristería">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
-                    <h3>Floristería</h3>
-                    <p>Arreglos florales y detalles.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Entretenimiento">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
-                    <h3>Entretenimiento</h3>
-                    <p>Eventos, música y ocio.</p>
-                </div>
-                <div class="tarjeta-categoria" data-cat="Sastrería">
-                    <div class="icono-cat"><svg viewBox="0 0 24 24"><path d="M6 2l6 6-6 6"></path><path d="M18 2l-6 6 6 6"></path></svg></div>
-                    <h3>Sastrería</h3>
-                    <p>Arreglos de ropa y confección.</p>
-                </div>
-            </div>
+            <div class="grid-categorias" id="grid-categorias"></div>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
             <div class="footer-col">
-                <h4>Sobre el Directorio</h4>
+                <h4>Sobre el Proyecto</h4>
                 <p>Una plataforma digital para descubrir y apoyar los emprendimientos y negocios locales en El Socorro.</p>
             </div>
             <div class="footer-col">
@@ -1114,7 +1416,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            &copy; 2026 Directorio El Socorro. Todos los derechos reservados.
+            &copy; 2026 Emprende Socorro. Todos los derechos reservados.
         </div>
     </footer>
 
@@ -1183,12 +1485,20 @@
         </div>
     </div>
 
+    <div id="toast-contenedor" aria-live="polite" aria-atomic="false"></div>
+
     <script>
         const formulario = document.getElementById('form-emprendimiento');
         const contenedor = document.getElementById('contenedor-tarjetas');
-        const botonesFiltro = document.querySelectorAll('.filtro-btn');
         const buscador = document.getElementById('buscador');
         const btnTema = document.getElementById('btn-tema');
+        const filtrosGrupos = document.getElementById('filtros');
+        const filtrosSub = document.getElementById('filtros-sub');
+        const gridCategorias = document.getElementById('grid-categorias');
+        const buscadorContenedor = document.getElementById('buscador-contenedor');
+        const contenedorSugerencias = document.getElementById('sugerencias');
+        const contenedorToast = document.getElementById('toast-contenedor');
+        const heroStats = document.getElementById('hero-stats');
         
         const modalFormulario = document.getElementById('modal-formulario');
         const modalTexto = document.getElementById('modal-texto');
@@ -1223,10 +1533,61 @@
         const piePagina = document.querySelector('footer');
         const navInicio = document.getElementById('nav-inicio');
         const navCategorias = document.getElementById('nav-categorias');
-        const tarjetasCategoria = document.querySelectorAll('.tarjeta-categoria');
+
+        let grupoActivo = 'Todos';
+        let subcategoriaActiva = null;
+        let minCalificacion = null;
+
+        const CLAVE_BUSQUEDAS_RECIENTES = 'busquedas_recientes';
+        let busquedasRecientes = [];
+        try {
+            const guardadas = JSON.parse(localStorage.getItem(CLAVE_BUSQUEDAS_RECIENTES) || '[]');
+            if (Array.isArray(guardadas)) busquedasRecientes = guardadas.slice(0, 5);
+        } catch (error) {
+            busquedasRecientes = [];
+        }
 
         let logoBase64 = '';
         let idEdicion = null;
+
+        const GRUPOS = [
+            {
+                nombre: 'Comer y Beber',
+                descripcion: 'Restaurantes, cafeterías y repostería.',
+                icono: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line>',
+                subcategorias: ['Comida', 'Café y Postres']
+            },
+            {
+                nombre: 'Moda y Belleza',
+                descripcion: 'Ropa, calzado, estética y confección.',
+                icono: '<path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H5v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10h1.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>',
+                subcategorias: ['Ropa y Calzado', 'Belleza y Barbería', 'Sastrería']
+            },
+            {
+                nombre: 'Salud y Bienestar',
+                descripcion: 'Farmacias, gimnasios y cuidado de mascotas.',
+                icono: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>',
+                subcategorias: ['Salud y Farmacia', 'Deportes', 'Mascotas']
+            },
+            {
+                nombre: 'Hogar y Servicios',
+                descripcion: 'Ferretería, oficios, transporte y talleres.',
+                icono: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>',
+                subcategorias: ['Hogar y Ferretería', 'Servicios', 'Automotriz', 'Transporte y Envíos']
+            },
+            {
+                nombre: 'Tecnología y Educación',
+                descripcion: 'Equipos, papelería y academias.',
+                icono: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line>',
+                subcategorias: ['Tecnología', 'Papelería y Librería', 'Educación']
+            },
+            {
+                nombre: 'Turismo, Arte y Ocio',
+                descripcion: 'Hospedaje, eventos, artesanías y flores.',
+                icono: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>',
+                subcategorias: ['Turismo y Hoteles', 'Entretenimiento', 'Artesanías', 'Floristería']
+            }
+        ];
         
         const CLAVE_VERSION_EMPRENDIMIENTOS = 'version_emprendimientos';
         const VERSION_EMPRENDIMIENTOS = 'socorro-google-maps-1';
@@ -1453,17 +1814,222 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        tarjetasCategoria.forEach(tarjeta => {
-            tarjeta.addEventListener('click', function() {
-                const categoria = this.getAttribute('data-cat');
-                const botonFiltro = document.querySelector(`.filtro-btn[data-categoria="${categoria}"]`);
-                
-                if (botonFiltro) {
-                    botonFiltro.click();
-                    botonFiltro.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        function renderFiltros() {
+            filtrosGrupos.innerHTML = ['<button class="filtro-btn" data-grupo="Todos">Todos</button>', '<button class="filtro-btn rating" data-rating="4">4+ estrellas</button>']
+                .concat(GRUPOS.map(grupo => `<button class="filtro-btn grupo" data-grupo="${escaparHtml(grupo.nombre)}">${escaparHtml(grupo.nombre)}</button>`))
+                .join('');
+
+            const grupo = GRUPOS.find(g => g.nombre === grupoActivo);
+            filtrosSub.hidden = !grupo;
+            filtrosSub.scrollLeft = 0;
+            filtrosSub.innerHTML = grupo
+                ? grupo.subcategorias.map(categoria => `<button class="filtro-btn sub" data-sub="${escaparHtml(categoria)}">${escaparHtml(categoria)}</button>`).join('')
+                : '';
+
+            marcarFiltrosActivos();
+        }
+
+        function marcarFiltrosActivos() {
+            filtrosGrupos.querySelectorAll('.filtro-btn').forEach(boton => {
+                if (boton.dataset.rating) {
+                    boton.classList.toggle('activo', Boolean(minCalificacion));
+                    return;
                 }
-                navInicio.click();
+                const esGrupoActivo = boton.dataset.grupo === grupoActivo;
+                boton.classList.toggle('activo', esGrupoActivo && !subcategoriaActiva);
+                boton.classList.toggle('contexto', esGrupoActivo && Boolean(subcategoriaActiva));
             });
+            filtrosSub.querySelectorAll('.filtro-btn').forEach(boton => {
+                boton.classList.toggle('activo', boton.dataset.sub === subcategoriaActiva);
+            });
+        }
+
+        function seleccionarGrupo(nombre) {
+            grupoActivo = nombre;
+            subcategoriaActiva = null;
+            renderFiltros();
+            mostrarEmprendimientos(buscador.value);
+        }
+
+        filtrosGrupos.addEventListener('click', (evento) => {
+            const boton = evento.target.closest('.filtro-btn');
+            if (!boton) return;
+
+            if (boton.dataset.rating) {
+                minCalificacion = minCalificacion ? null : Number(boton.dataset.rating);
+                marcarFiltrosActivos();
+                mostrarEmprendimientos(buscador.value);
+                return;
+            }
+
+            seleccionarGrupo(boton.dataset.grupo);
+            const activo = filtrosGrupos.querySelector('.filtro-btn.activo');
+            if (activo) activo.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+
+        filtrosSub.addEventListener('click', (evento) => {
+            const boton = evento.target.closest('.filtro-btn');
+            if (!boton) return;
+            subcategoriaActiva = boton.dataset.sub;
+            marcarFiltrosActivos();
+            mostrarEmprendimientos(buscador.value);
+            boton.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+
+        function limpiarFiltros() {
+            grupoActivo = 'Todos';
+            subcategoriaActiva = null;
+            minCalificacion = null;
+            buscador.value = '';
+            ocultarSugerencias();
+            renderFiltros();
+            mostrarEmprendimientos();
+        }
+
+        function renderCategorias() {
+            gridCategorias.innerHTML = GRUPOS.map(grupo => `
+                <div class="tarjeta-categoria" data-grupo="${escaparHtml(grupo.nombre)}">
+                    <div class="icono-cat"><svg viewBox="0 0 24 24">${grupo.icono}</svg></div>
+                    <h3>${escaparHtml(grupo.nombre)}</h3>
+                    <p>${escaparHtml(grupo.descripcion)}</p>
+                    <div class="subcategorias-cat">
+                        ${grupo.subcategorias.map(categoria => `<button type="button" class="subcat-chip" data-sub="${escaparHtml(categoria)}">${escaparHtml(categoria)}</button>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        gridCategorias.addEventListener('click', (evento) => {
+            const tarjeta = evento.target.closest('.tarjeta-categoria');
+            if (!tarjeta) return;
+            const chip = evento.target.closest('.subcat-chip');
+            grupoActivo = tarjeta.dataset.grupo;
+            subcategoriaActiva = chip ? chip.dataset.sub : null;
+            renderFiltros();
+            navInicio.click();
+        });
+
+        function normalizar(texto = '') {
+            return String(texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        }
+
+        function crearEstrellas(valor) {
+            const porcentaje = Math.max(0, Math.min(5, valor)) * 20;
+            return `<span class="estrellas" role="img" aria-label="${valor.toFixed(1)} de 5 estrellas">
+                <span class="estrellas-base">★★★★★</span>
+                <span class="estrellas-relleno" style="width:${porcentaje}%">★★★★★</span>
+            </span>`;
+        }
+
+        function mostrarToast(mensaje, tipo = 'exito') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${tipo}`;
+            toast.textContent = mensaje;
+            contenedorToast.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('visible'));
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => toast.remove(), 300);
+            }, 2600);
+        }
+
+        function actualizarHero() {
+            const total = emprendimientos.length;
+            const categorias = new Set(emprendimientos.map(emp => emp.categoria)).size;
+            const resenas = emprendimientos.reduce((suma, emp) => suma + (Number.isFinite(emp.resenas) ? emp.resenas : 0), 0);
+            const plural = (numero, singular, pluralForma) => `${numero} ${numero === 1 ? singular : pluralForma}`;
+            heroStats.textContent = `${plural(total, 'negocio', 'negocios')} · ${plural(categorias, 'categoría', 'categorías')} · ${plural(resenas, 'reseña', 'reseñas')}`;
+        }
+
+        function mostrarSkeletons() {
+            contenedor.innerHTML = Array.from({ length: 6 }, () => `
+                <div class="tarjeta-esqueleto" aria-hidden="true">
+                    <div class="esqueleto esqueleto-titulo"></div>
+                    <div class="esqueleto esqueleto-chip"></div>
+                    <div class="esqueleto esqueleto-linea"></div>
+                    <div class="esqueleto esqueleto-linea corta"></div>
+                    <div class="esqueleto esqueleto-linea"></div>
+                </div>
+            `).join('');
+        }
+
+        function guardarBusqueda(texto) {
+            const termino = texto.trim();
+            if (termino.length < 2) return;
+            busquedasRecientes = [termino, ...busquedasRecientes.filter(t => normalizar(t) !== normalizar(termino))].slice(0, 5);
+            localStorage.setItem(CLAVE_BUSQUEDAS_RECIENTES, JSON.stringify(busquedasRecientes));
+        }
+
+        function ocultarSugerencias() {
+            contenedorSugerencias.hidden = true;
+            buscador.setAttribute('aria-expanded', 'false');
+        }
+
+        function renderSugerencias() {
+            const texto = buscador.value.trim();
+
+            if (!texto) {
+                if (!busquedasRecientes.length) {
+                    ocultarSugerencias();
+                    return;
+                }
+                contenedorSugerencias.innerHTML = '<div class="sugerencia-titulo">Búsquedas recientes</div>' +
+                    busquedasRecientes.map(termino => `<button type="button" class="sugerencia-item" data-termino="${escaparHtml(termino)}">${escaparHtml(termino)}</button>`).join('');
+            } else {
+                const consulta = normalizar(texto);
+                const coincidencias = emprendimientos.filter(emp =>
+                    normalizar(emp.nombre).includes(consulta) ||
+                    normalizar(emp.categoria).includes(consulta) ||
+                    normalizar(emp.descripcion || '').includes(consulta)
+                ).slice(0, 6);
+
+                if (!coincidencias.length) {
+                    ocultarSugerencias();
+                    return;
+                }
+                contenedorSugerencias.innerHTML = '<div class="sugerencia-titulo">Negocios</div>' +
+                    coincidencias.map(emp => `<button type="button" class="sugerencia-item" data-id="${emp.id}">${escaparHtml(emp.nombre)}<span class="sugerencia-meta">${escaparHtml(emp.categoria)}</span></button>`).join('');
+            }
+
+            contenedorSugerencias.hidden = false;
+            buscador.setAttribute('aria-expanded', 'true');
+        }
+
+        buscador.addEventListener('focus', renderSugerencias);
+
+        contenedorSugerencias.addEventListener('click', (evento) => {
+            const item = evento.target.closest('.sugerencia-item');
+            if (!item) return;
+
+            if (item.dataset.id) {
+                guardarBusqueda(buscador.value);
+                ocultarSugerencias();
+                mostrarPaginaNegocio(Number(item.dataset.id));
+            } else {
+                buscador.value = item.dataset.termino;
+                guardarBusqueda(item.dataset.termino);
+                ocultarSugerencias();
+                mostrarEmprendimientos(buscador.value);
+            }
+        });
+
+        document.addEventListener('click', (evento) => {
+            if (!buscadorContenedor.contains(evento.target)) ocultarSugerencias();
+        });
+
+        buscadorContenedor.addEventListener('focusout', () => {
+            setTimeout(() => {
+                if (!buscadorContenedor.contains(document.activeElement)) ocultarSugerencias();
+            }, 0);
+        });
+
+        buscador.addEventListener('keydown', (evento) => {
+            if (evento.key === 'Enter') {
+                guardarBusqueda(buscador.value);
+                ocultarSugerencias();
+            } else if (evento.key === 'Escape') {
+                ocultarSugerencias();
+            }
         });
 
         function abrirModalFormulario() {
@@ -1605,8 +2171,8 @@
             const instagram = emp.instagram ? emp.instagram.replace(/^@/, '').replace(/[^\w.]/g, '') : '';
             const facebook = emp.facebook ? emp.facebook.replace(/[^\w.]/g, '') : '';
             const logoValido = emp.logo && /^data:image\//i.test(emp.logo);
-            const calificacion = typeof emp.calificacion === 'number' && Number.isFinite(emp.calificacion)
-                ? `${emp.calificacion.toFixed(1)} / 5${emp.resenas ? ` (${emp.resenas} reseñas)` : ''}`
+            const calificacionHtml = typeof emp.calificacion === 'number' && Number.isFinite(emp.calificacion)
+                ? `${crearEstrellas(emp.calificacion)}<span>${emp.calificacion.toFixed(1)} / 5${emp.resenas ? ` (${emp.resenas} reseñas)` : ''}</span>`
                 : 'No registrada';
             const logoHtml = logoValido ? `<img src="${escaparHtml(emp.logo)}" alt="Logo de ${nombre}">` : '';
             const telefonoHtml = telefonoSeguro ? `<a href="tel:${telefonoSeguro}">${telefono}</a>` : `<span>${telefono}</span>`;
@@ -1629,7 +2195,7 @@
                         <h2>Sobre este negocio</h2>
                         <p class="pagina-negocio-descripcion">${descripcion}</p>
                         <div class="detalles-pagina-negocio">
-                            <div class="detalle-pagina-item"><strong>Calificación</strong><span>${escaparHtml(calificacion)}</span></div>
+                            <div class="detalle-pagina-item"><strong>Calificación</strong><span>${calificacionHtml}</span></div>
                             <div class="detalle-pagina-item"><strong>Dirección</strong><span>${direccion}</span></div>
                             <div class="detalle-pagina-item"><strong>Teléfono</strong>${telefonoHtml}</div>
                             <div class="detalle-pagina-item"><strong>Horario</strong><span>${horario}</span></div>
@@ -1668,8 +2234,7 @@
             navCategorias.classList.remove('activo');
             navInicio.classList.add('activo');
             document.title = 'Directorio El Socorro';
-            const filtroActivo = document.querySelector('.filtro-btn.activo').getAttribute('data-categoria');
-            mostrarEmprendimientos(filtroActivo, buscador.value);
+            mostrarEmprendimientos(buscador.value);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1678,23 +2243,56 @@
             editar(id);
         }
 
-        function mostrarEmprendimientos(filtro = 'Todos', textoBusqueda = '') {
-            contenedor.innerHTML = ''; 
+        function coincideConFiltro(emp) {
+            if (minCalificacion && !(Number.isFinite(emp.calificacion) && emp.calificacion >= minCalificacion)) return false;
+            if (grupoActivo === 'Todos') return true;
+            if (subcategoriaActiva) return emp.categoria === subcategoriaActiva;
+            const grupo = GRUPOS.find(g => g.nombre === grupoActivo);
+            return grupo ? grupo.subcategorias.includes(emp.categoria) : true;
+        }
+
+        const observadorTarjetas = 'IntersectionObserver' in window
+            ? new IntersectionObserver((entradas) => {
+                entradas.forEach(entrada => {
+                    if (entrada.isIntersecting) {
+                        entrada.target.classList.add('visible');
+                        observadorTarjetas.unobserve(entrada.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
+            : null;
+
+        function mostrarEmprendimientos(textoBusqueda = '') {
+            contenedor.innerHTML = '';
             
-            let datos = filtro === 'Todos' ? emprendimientos : emprendimientos.filter(emp => emp.categoria === filtro);
+            let datos = emprendimientos.filter(coincideConFiltro);
             
             if (textoBusqueda) {
-                const textoLower = textoBusqueda.toLowerCase();
-                datos = datos.filter(emp => 
-                    emp.nombre.toLowerCase().includes(textoLower) || 
-                    emp.descripcion.toLowerCase().includes(textoLower)
+                const consulta = normalizar(textoBusqueda);
+                datos = datos.filter(emp =>
+                    normalizar(emp.nombre).includes(consulta) ||
+                    normalizar(emp.categoria).includes(consulta) ||
+                    normalizar(emp.descripcion || '').includes(consulta)
                 );
             }
+
+            if (datos.length === 0) {
+                contenedor.innerHTML = `
+                    <div class="estado-vacio">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+                        <h3>No encontramos negocios</h3>
+                        <p>Prueba con otra búsqueda o quita los filtros activos.</p>
+                        <button type="button" class="btn-limpiar-filtros">Limpiar filtros</button>
+                    </div>`;
+                contenedor.querySelector('.btn-limpiar-filtros').addEventListener('click', limpiarFiltros);
+                return;
+            }
             
-            datos.forEach((emp, index) => {
+            datos.forEach((emp) => {
                 const tarjeta = document.createElement('div');
-                tarjeta.classList.add('tarjeta');
-                tarjeta.style.animationDelay = `${index * 0.05}s`;
+                tarjeta.classList.add('tarjeta', 'revelar');
+                if (observadorTarjetas) observadorTarjetas.observe(tarjeta);
+                else tarjeta.classList.add('visible');
                 
                 const imagenHtml = emp.logo ? `<img src="${emp.logo}" class="logo-tarjeta" style="display:block" alt="Logo">` : '';
                 const waHtml = emp.whatsapp ? `<a href="https://wa.me/${emp.whatsapp}" target="_blank" rel="noopener noreferrer">WhatsApp</a>` : '';
@@ -1702,7 +2300,7 @@
                 const fbHtml = emp.facebook ? `<a href="https://facebook.com/${emp.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>` : '';
                 const telefonoSeguro = emp.telefono ? emp.telefono.replace(/[^\d+]/g, '') : '';
                 const calificacionHtml = typeof emp.calificacion === 'number' && Number.isFinite(emp.calificacion) && emp.resenas
-                    ? `<span class="detalle-calificacion">Calificación: ${emp.calificacion.toFixed(1)} (${emp.resenas} reseñas)</span>`
+                    ? `<span class="detalle-calificacion">${crearEstrellas(emp.calificacion)} ${emp.calificacion.toFixed(1)} (${emp.resenas} reseñas)</span>`
                     : '';
                 const direccionHtml = emp.direccion ? `<span>Dirección: ${emp.direccion}</span>` : '';
                 const telefonoHtml = emp.telefono && telefonoSeguro
@@ -1780,6 +2378,7 @@
             const paginaActiva = paginaNegocio.classList.contains('activa');
             emprendimientos = emprendimientos.filter(emp => emp.id !== id);
             guardarYActualizar();
+            mostrarToast('Negocio eliminado', 'peligro');
             if (paginaActiva) cerrarPaginaNegocio();
         }
 
@@ -1788,6 +2387,7 @@
             if (index !== -1) {
                 emprendimientos[index].likes = (emprendimientos[index].likes || 0) + 1;
                 guardarYActualizar();
+                mostrarToast('Like agregado');
             }
         }
 
@@ -1827,8 +2427,8 @@
 
         function guardarYActualizar() {
             localStorage.setItem('emprendimientos', JSON.stringify(emprendimientos));
-            const filtroActivo = document.querySelector('.filtro-btn.activo').getAttribute('data-categoria');
-            mostrarEmprendimientos(filtroActivo, buscador.value);
+            actualizarHero();
+            mostrarEmprendimientos(buscador.value);
         }
 
         formulario.addEventListener('submit', function(evento) {
@@ -1852,6 +2452,7 @@
                 : null;
             const resenasNumero = resenasEntrada === '' ? 0 : Number.parseInt(resenasEntrada, 10);
             const resenas = Number.isFinite(resenasNumero) ? Math.max(0, resenasNumero) : 0;
+            const modoEdicion = Boolean(idEdicion);
             
             if (idEdicion) {
                 const index = emprendimientos.findIndex(e => e.id === idEdicion);
@@ -1869,24 +2470,20 @@
             }
             
             guardarYActualizar();
+            mostrarToast(modoEdicion ? 'Cambios guardados' : 'Negocio publicado');
             cerrarModalFormulario();
         });
 
-        botonesFiltro.forEach(boton => {
-            boton.addEventListener('click', function() {
-                botonesFiltro.forEach(b => b.classList.remove('activo'));
-                this.classList.add('activo');
-                this.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-                mostrarEmprendimientos(this.getAttribute('data-categoria'), buscador.value);
-            });
-        })
-
         buscador.addEventListener('input', () => {
-            const filtroActivo = document.querySelector('.filtro-btn.activo').getAttribute('data-categoria');
-            mostrarEmprendimientos(filtroActivo, buscador.value);
+            mostrarEmprendimientos(buscador.value);
+            renderSugerencias();
         });
 
-        mostrarEmprendimientos();
+        renderCategorias();
+        renderFiltros();
+        actualizarHero();
+        mostrarSkeletons();
+        setTimeout(() => mostrarEmprendimientos(buscador.value), 500);
     </script>
 </body>
 </html>
